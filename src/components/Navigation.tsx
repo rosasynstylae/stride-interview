@@ -8,19 +8,18 @@ function Navigation() {
   return (
     <Drawer.Root placement="start">
       <Drawer.Backdrop />
-      <Drawer.Trigger asChild aria-label="Open Navigation">
-        <IconButton>
+      <Drawer.Trigger asChild>
+        <IconButton aria-label="Open navigation">
           <LuMenu />
         </IconButton>
       </Drawer.Trigger>
       <Drawer.Positioner>
         <Drawer.Content>
-          <Drawer.CloseTrigger />
           <Drawer.Header>
             <Drawer.Title>Navigation</Drawer.Title>
           </Drawer.Header>
           <Drawer.Body>
-            <nav>
+            <nav aria-label="Main">
               <Stack as="ul" listStyleType="none" gap="2">
                 <li>
                   <Drawer.ActionTrigger asChild>

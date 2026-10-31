@@ -17,7 +17,7 @@ function HeaderBar({ children }: THeaderBar) {
       borderBottomColor="gray"
     >
       <Navigation />
-      <nav>{children}</nav>
+      {children}
     </chakra.header>
   );
 }

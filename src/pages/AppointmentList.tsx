@@ -1,5 +1,6 @@
 import { HeaderBar } from "@/components/HeaderBar";
 import { PageLayout } from "@/components/PageLayout";
+import { getPageTitle } from "@/utils/getPageTitle";
 import { Breadcrumb } from "@chakra-ui/react/breadcrumb";
 import { Heading } from "@chakra-ui/react/heading";
 import { NavLink } from "react-router";
@@ -26,8 +27,13 @@ function AppointmentListHeaderBar() {
 
 function AppointmentList() {
   return (
-    <PageLayout headerBar={<AppointmentListHeaderBar />}>
-      <Heading size="xl">Appointment List - In Progress 🚧</Heading>
+    <PageLayout
+      title={getPageTitle("Appointments")}
+      headerBar={<AppointmentListHeaderBar />}
+    >
+      <Heading as="h1" size="xl">
+        Appointment List - In Progress 🚧
+      </Heading>
     </PageLayout>
   );
 }

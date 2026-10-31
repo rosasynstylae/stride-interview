@@ -2,6 +2,8 @@ import { PageLayout } from "@/components/PageLayout";
 import { Breadcrumb } from "@chakra-ui/react/breadcrumb";
 import { HeaderBar } from "@/components/HeaderBar";
 import { QuickLinks } from "@/components/home/QuickLinks";
+import { VisuallyHidden } from "@chakra-ui/react";
+import { getPageTitle } from "@/utils/getPageTitle";
 
 function HomeHeaderBar() {
   return (
@@ -19,7 +21,8 @@ function HomeHeaderBar() {
 
 function Home() {
   return (
-    <PageLayout headerBar={<HomeHeaderBar />}>
+    <PageLayout title={getPageTitle("Home")} headerBar={<HomeHeaderBar />}>
+      <VisuallyHidden as="h1">Home</VisuallyHidden>
       <QuickLinks />
     </PageLayout>
   );

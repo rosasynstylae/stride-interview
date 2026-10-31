@@ -9,11 +9,18 @@ interface TQuickLinkCardProps {
 
 function QuickLinkCard({ link, children }: TQuickLinkCardProps) {
   return (
-    <Card.Root width={{ base: "full", md: "320px" }} variant="outline" asChild>
+    <Card.Root
+      width={{ base: "full", md: "320px" }}
+      variant="outline"
+      focusRing="outside"
+      asChild
+    >
       <Link to={link}>
         <Card.Body gap="2">{children}</Card.Body>
         <Card.Footer justifyContent="flex-end">
-          <Button>Go</Button>
+          <Button asChild type={undefined}>
+            <span aria-hidden="true">Go</span>
+          </Button>
         </Card.Footer>
       </Link>
     </Card.Root>
