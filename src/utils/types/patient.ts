@@ -1,10 +1,13 @@
-interface TPatient {
-  createdAt: string;
+interface TPatientInfo {
   dateOfBirth: string;
   firstName: string;
-  id: string | number;
   lastName: string;
   phoneNumber: string;
 }
 
-export type { TPatient };
+interface TPatient extends TPatientInfo {
+  id: string | number;
+  createdAt: string;
+}
+
+export type { TPatient, TPatientInfo };

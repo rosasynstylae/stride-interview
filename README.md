@@ -23,9 +23,6 @@ npm run dev
 ## Appointment View
 - List of all appointments by date & time
 
-## Patient List
-- Create
-
 ## Patient Details
 - Patient Details
   - name
@@ -47,14 +44,10 @@ npm run dev
 - error boundary
 
 # Nice to Haves
-## Appointment Edit
-would be good to be able to edit an appointment
-
-## Patient Edit
-would be good to be able to edit a patient
-
-## Testing
-would be good to have tests
+- Appointment Edit
+- Patient Edit
+- Testing
+- Patient list filtering
 
 # Choices
 ## Oxlint over ESLint
@@ -72,6 +65,9 @@ Easy way to split up the code
 
 ## @tanstack/react-query
 Used this to easily handle fetching states and reduced-fetching on queries that are the same
+
+## react-hook-form
+quick way to get all of the validation/dirty state needed. zod because well used, small, and easy
 
 # Next Steps
 ## Auth

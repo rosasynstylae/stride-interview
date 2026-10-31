@@ -1,3 +1,5 @@
+import type { JsonCompatible } from "@/utils/types/json";
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 class APIError extends Error {
@@ -15,6 +17,11 @@ const DEFAULT_PARSER_FUNC = async <T>(result: Response): Promise<T> =>
 
 const getFullUrl = (path: string): URL => new URL(path, BASE_URL);
 
+const handleJSONBody = <T>(body: T & JsonCompatible<T>): RequestInit => ({
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(body),
+});
+
 const apiAction = async <T>(
   apiPath: URL,
   options?: RequestInit,
@@ -27,4 +34,4 @@ const apiAction = async <T>(
   return await parser(result);
 };
 
-export { getFullUrl, apiAction };
+export { getFullUrl, apiAction, handleJSONBody };
