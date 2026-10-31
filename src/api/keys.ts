@@ -1,0 +1,5 @@
+import { PATIENT_URLS } from "./urls";
+
+const FETCH_PATIENT_LIST_KEY = [PATIENT_URLS.FETCH_LIST];
+
+export { FETCH_PATIENT_LIST_KEY };

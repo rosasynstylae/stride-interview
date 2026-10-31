@@ -12,9 +12,6 @@ npm run dev
 ```
 
 # TODO
-## Home Page
-- navigation
-
 ## Appointment Set Up
 - Create Form
   - Patient selection.
@@ -27,11 +24,6 @@ npm run dev
 - List of all appointments by date & time
 
 ## Patient List
-- List of Patients
-  - name
-  - date of birth
-  - phone number
-  - redirect to details
 - Create
 
 ## Patient Details
@@ -49,6 +41,10 @@ npm run dev
     - progress notes
     - edit
   - Create Clinical Notes
+
+## Misc
+- nav link "current" styling
+- error boundary
 
 # Nice to Haves
 ## Appointment Edit

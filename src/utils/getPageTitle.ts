@@ -1,3 +1,3 @@
-const getPageTitle = (title: string) => `${title} | Stride`;
+const getPageTitle = (title: string): string => `${title} | Stride`;
 
 export { getPageTitle };
