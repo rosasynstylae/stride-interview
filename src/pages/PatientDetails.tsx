@@ -1,7 +1,41 @@
+import { HeaderBar } from "@/components/HeaderBar";
 import { Heading } from "@chakra-ui/react/heading";
+import { Breadcrumb } from "@chakra-ui/react/breadcrumb";
+import { PageLayout } from "@/components/PageLayout";
+import { NavLink } from "react-router";
+
+function PatientDetailsHeaderBar() {
+  return (
+    <HeaderBar>
+      <Breadcrumb.Root>
+        <Breadcrumb.List>
+          <Breadcrumb.Item>
+            <Breadcrumb.Link asChild>
+              <NavLink to="/">Home</NavLink>
+            </Breadcrumb.Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Separator />
+          <Breadcrumb.Item>
+            <Breadcrumb.Link asChild>
+              <NavLink to="/patients">Patients</NavLink>
+            </Breadcrumb.Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Separator />
+          <Breadcrumb.Item>
+            <Breadcrumb.CurrentLink>Details</Breadcrumb.CurrentLink>
+          </Breadcrumb.Item>
+        </Breadcrumb.List>
+      </Breadcrumb.Root>
+    </HeaderBar>
+  );
+}
 
 function PatientDetails() {
-  return <Heading size="xl">Patient Details - In Progress 🚧</Heading>;
+  return (
+    <PageLayout headerBar={<PatientDetailsHeaderBar />}>
+      <Heading size="xl">Patient Details - In Progress 🚧</Heading>
+    </PageLayout>
+  );
 }
 
 export default PatientDetails;

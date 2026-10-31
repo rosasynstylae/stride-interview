@@ -1,9 +1,16 @@
-import { Flex, type FlexProps } from "@chakra-ui/react";
+import { Flex, type FlexProps } from "@chakra-ui/react/flex";
 
-function PageLayout({ children, ...props }: FlexProps) {
+interface TPageLayoutProps extends FlexProps {
+  headerBar: React.ReactNode | React.ReactNode[];
+}
+
+function PageLayout({ children, headerBar, ...props }: TPageLayoutProps) {
   return (
-    <Flex align="center" gap="2" p="4" {...props}>
-      {children}
+    <Flex align="center" direction="column" gap="2" {...props}>
+      {headerBar}
+      <Flex direction="row" align="start" p="4" w="full">
+        {children}
+      </Flex>
     </Flex>
   );
 }
