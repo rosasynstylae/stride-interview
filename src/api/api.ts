@@ -34,4 +34,4 @@ const apiAction = async <T>(
   return await parser(result);
 };
 
-export { getFullUrl, apiAction, handleJSONBody };
+export { APIError, getFullUrl, apiAction, handleJSONBody };

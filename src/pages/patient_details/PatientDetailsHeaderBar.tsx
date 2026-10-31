@@ -1,9 +1,6 @@
 import { HeaderBar } from "@/components/HeaderBar";
-import { Heading } from "@chakra-ui/react/heading";
 import { Breadcrumb } from "@chakra-ui/react/breadcrumb";
-import { PageLayout } from "@/components/PageLayout";
 import { NavLink } from "react-router";
-import { getPageTitle } from "@/utils/getPageTitle";
 
 function PatientDetailsHeaderBar() {
   return (
@@ -31,17 +28,4 @@ function PatientDetailsHeaderBar() {
   );
 }
 
-function PatientDetails() {
-  return (
-    <PageLayout
-      title={getPageTitle("Patient Details")}
-      headerBar={<PatientDetailsHeaderBar />}
-    >
-      <Heading as="h1" size="xl">
-        Patient Details - In Progress 🚧
-      </Heading>
-    </PageLayout>
-  );
-}
-
-export default PatientDetails;
+export { PatientDetailsHeaderBar };

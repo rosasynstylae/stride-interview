@@ -13,22 +13,23 @@ npm run dev
 
 # TODO
 ## Appointment Set Up
-- Create Form
-  - Patient selection.
-  - Date & time selection.
-  - Provider selection (dropdown of available physical therapists).
-  - Appointment type (Initial Evaluation, Follow-up, Discharge) `hardcoded enum`.
-  - Status (Scheduled, Checked In, Canceled) `hardcoded enum`.
-
-## Appointment View
-- List of all appointments by date & time
+- Create appointment
+  - patient id
+  - date
+  - start time
+  - end time
+  - type
+  - status
+  - provider id
 
 ## Patient Details
-- Patient Details
-  - name
-  - date of birth
-  - phone number
-- Appointment List
+- Create appointment
+  - date
+  - start time
+  - end time
+  - type
+  - status
+  - provider id
 
 ## Appointment Details
 - Appointment View
@@ -48,6 +49,8 @@ npm run dev
 - Patient Edit
 - Testing
 - Patient list filtering
+- Patient details header/title use the patient name (would use context, probably)
+- full appointments list, regardless of patient
 
 # Choices
 ## Oxlint over ESLint

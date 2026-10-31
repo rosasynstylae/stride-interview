@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import { LuEye } from "react-icons/lu";
 import { IconButton } from "@chakra-ui/react/button";
 import { Table } from "@chakra-ui/react/table";
+import { formatBirthDate } from "@/utils/formatDate";
 
 interface TPatientListProps {
   patients: TPatient[];
@@ -39,7 +40,7 @@ function PatientList({ patients }: TPatientListProps) {
                   {p.phoneNumber}
                 </LinkStyled>
               </Table.Cell>
-              <Table.Cell>{p.dateOfBirth}</Table.Cell>
+              <Table.Cell>{formatBirthDate(p.dateOfBirth)}</Table.Cell>
             </Table.Row>
           ))
         ) : (

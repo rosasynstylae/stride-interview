@@ -1,18 +1,13 @@
 import { useFetchPatientList } from "@/api/patient/fetchPatientList";
-import { Spinner } from "@chakra-ui/react/spinner";
 import { PatientList } from "@/components/patient_list/PatientList";
-import { Flex } from "@chakra-ui/react/flex";
 import { Text } from "@chakra-ui/react/text";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 function PatientListContainer() {
   const { data, isFetching, isError } = useFetchPatientList();
 
   if (isFetching) {
-    return (
-      <Flex w="full" alignItems="center" justifyContent="center">
-        <Spinner size="xl" />
-      </Flex>
-    );
+    return <LoadingSpinner />;
   }
 
   if (!data || isError) {
