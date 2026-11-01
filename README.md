@@ -40,9 +40,9 @@ quick way to get all of the validation/dirty state needed. zod because well used
 - pre-commit linting (maybe tsc?)
 - consistent router urls (to make it DRYer/more maintainable)
 - save provider details in a global context, rather than re-fetching so much
-- create a "DialogFormContent" to handle the form use-case smoothly with valid html
 - getPatientName util
 - Easier "check in" flow
+- Ability to filter out "completed" appointments
 
 # Next Steps
 ## Auth

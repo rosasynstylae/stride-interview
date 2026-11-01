@@ -1,5 +1,5 @@
-import { chakra } from "@chakra-ui/react/styled-system";
 import { Dialog } from "@chakra-ui/react/dialog";
+import { DialogFormContent } from "@/components/ui/DialogFormContent";
 import { Button, CloseButton } from "@chakra-ui/react/button";
 import { Portal } from "@chakra-ui/react/portal";
 import { PatientForm } from "@/components/patient_form/PatientForm";
@@ -36,34 +36,25 @@ function PatientCreateDialog() {
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          <Dialog.Content>
-            <chakra.form
-              display="contents"
-              onSubmit={(e) => void submitForm(e)}
-              noValidate
-            >
-              <Dialog.Header>
-                <Dialog.Title>Add patient</Dialog.Title>
-              </Dialog.Header>
-              <Dialog.Body>
-                <PatientForm control={control} />
-              </Dialog.Body>
-              <Dialog.Footer>
-                <Dialog.ActionTrigger asChild>
-                  <Button variant="outline">Cancel</Button>
-                </Dialog.ActionTrigger>
-                <Button
-                  type="submit"
-                  loading={isSubmitting}
-                >
-                  Save
-                </Button>
-              </Dialog.Footer>
-              <Dialog.CloseTrigger asChild>
-                <CloseButton size="sm" />
-              </Dialog.CloseTrigger>
-            </chakra.form>
-          </Dialog.Content>
+          <DialogFormContent onSubmit={(e) => void submitForm(e)}>
+            <Dialog.Header>
+              <Dialog.Title>Add patient</Dialog.Title>
+            </Dialog.Header>
+            <Dialog.Body>
+              <PatientForm control={control} />
+            </Dialog.Body>
+            <Dialog.Footer>
+              <Dialog.ActionTrigger asChild>
+                <Button variant="outline">Cancel</Button>
+              </Dialog.ActionTrigger>
+              <Button type="submit" loading={isSubmitting}>
+                Save
+              </Button>
+            </Dialog.Footer>
+            <Dialog.CloseTrigger asChild>
+              <CloseButton size="sm" />
+            </Dialog.CloseTrigger>
+          </DialogFormContent>
         </Dialog.Positioner>
       </Portal>
     </Dialog.Root>

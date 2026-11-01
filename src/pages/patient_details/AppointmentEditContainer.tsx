@@ -6,7 +6,7 @@ import { useUpdatePatientAppointment } from "@/api/patient/updatePatientAppointm
 import { AppointmentForm } from "@/components/appointment_form/AppointmentForm";
 import { toAppointmentFormValues } from "@/components/appointment_form/toAppointmentFormValues";
 import { useAppointmentForm } from "@/components/appointment_form/useAppointmentForm";
-import { toProviderOption } from "@/utils/selectOptions";
+import { toProviderOptions } from "@/utils/selectOptions";
 import { toISODateTime } from "@/utils/toISODateTime";
 import type { TAppointment } from "@/utils/types/appointment";
 import type { TProvider } from "@/utils/types/provider";
@@ -47,23 +47,19 @@ function AppointmentEditContainer({
     },
   });
 
-  const { setFocus, reset } = form;
+  const { setFocus } = form;
 
   // The Edit button that opened this is gone, so move focus into the form
   useEffect(() => {
     setFocus("date");
   }, [setFocus]);
 
-  const cancel = () => {
-    onCancel();
-    reset();
-  };
-
   const { isSubmitting } = form.formState;
 
+  // Always includes the appointment's provider, even before the list loads or if it failed
   const providerOptions = useMemo(
-    () => providers.map(toProviderOption),
-    [providers],
+    () => toProviderOptions(providers, appointment.providerId),
+    [providers, appointment.providerId],
   );
 
   return (
@@ -76,7 +72,7 @@ function AppointmentEditContainer({
         <Flex direction="column" gap={4}>
           <AppointmentForm providers={providerOptions} />
           <Flex gap={3} justifyContent="flex-end">
-            <Button onClick={cancel} variant="outline">
+            <Button onClick={onCancel} variant="outline">
               Cancel
             </Button>
             <Button type="submit" loading={isSubmitting}>

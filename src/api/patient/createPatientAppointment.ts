@@ -6,10 +6,7 @@ import {
   CREATE_PATIENT_APPOINTMENT_KEY,
   fetchPatientAppointmentsKey,
 } from "../keys";
-import type {
-  TAppointment,
-  TAppointmentInfo,
-} from "@/utils/types/appointment";
+import type { TAppointment, TAppointmentInfo } from "@/utils/types/appointment";
 
 const createPatientAppointment = (
   appointmentInfo: TAppointmentInfo,
@@ -28,8 +25,10 @@ const useCreatePatientAppointment = () => {
     mutationFn: createPatientAppointment,
     // Returning the promise keeps the mutation pending until the table has refreshed
     onSuccess: (_data, { patientId }) =>
+      // only refresh the appointments list
       queryClient.invalidateQueries({
         queryKey: fetchPatientAppointmentsKey(patientId),
+        exact: true,
       }),
     onError: () => {
       toaster.create({

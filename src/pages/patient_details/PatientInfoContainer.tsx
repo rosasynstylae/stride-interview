@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { PatientForm } from "@/components/patient_form/PatientForm";
 import { usePatientForm } from "@/components/patient_form/usePatientForm";
 import { toPatientFormValues } from "@/components/patient_form/toPatientFormValues";
 import { PatientInfo } from "@/components/patient_info/PatientInfo";
 import { PatientInfoHeader } from "@/components/patient_info/PatientInfoHeader";
 import type { TPatient } from "@/utils/types/patient";
-import { useOpen } from "@/utils/useOpen";
+import { useInlineEditToggle } from "@/utils/useInlineEditToggle";
 import { Button, IconButton } from "@chakra-ui/react/button";
 import { Flex } from "@chakra-ui/react/flex";
 import { LuPencil } from "react-icons/lu";
@@ -23,7 +23,7 @@ function PatientFormContainer({
   onCancel,
 }: TPatientFormContainerProps) {
   const { mutateAsync } = useUpdatePatient();
-  const { submitForm, control, reset, formState, setFocus } = usePatientForm({
+  const { submitForm, control, formState, setFocus } = usePatientForm({
     defaultValues: toPatientFormValues(patient),
     onSubmit: async (vals) => {
       try {
@@ -39,11 +39,6 @@ function PatientFormContainer({
   useEffect(() => {
     setFocus("firstName");
   }, [setFocus]);
-
-  const cancel = () => {
-    onCancel();
-    reset();
-  };
 
   const { isSubmitting } = formState;
 
@@ -63,7 +58,7 @@ function PatientFormContainer({
         >
           <PatientForm control={control} />
           <Flex gap={3} justifyContent="flex-end">
-            <Button onClick={cancel} variant="outline">
+            <Button onClick={onCancel} variant="outline">
               Cancel
             </Button>
             <Button type="submit" loading={isSubmitting}>
@@ -81,22 +76,13 @@ interface TPatientInfoContainerProps {
 }
 
 function PatientInfoContainer({ patient }: TPatientInfoContainerProps) {
-  const { open, onClose, onOpen } = useOpen();
-  const editButtonRef = useRef<HTMLButtonElement>(null);
-  const returnFocus = useRef(false);
-
-  // Leaving the form unmounts it; send focus back to the Edit button instead of <body>
-  const closeForm = () => {
-    returnFocus.current = true;
-    onClose();
-  };
-
-  useEffect(() => {
-    if (!open && returnFocus.current) {
-      returnFocus.current = false;
-      editButtonRef.current?.focus();
-    }
-  }, [open]);
+  // Swaps view ↔ form, returning focus to the Edit button when the form closes
+  const {
+    open,
+    onOpen,
+    closeForm,
+    triggerRef: editButtonRef,
+  } = useInlineEditToggle();
 
   if (open) {
     return (

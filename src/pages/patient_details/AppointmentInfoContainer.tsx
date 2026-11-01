@@ -1,11 +1,10 @@
-import { useEffect, useRef } from "react";
 import { Button } from "@chakra-ui/react/button";
 import { Flex } from "@chakra-ui/react/flex";
 import { AppointmentInfo } from "@/components/appointment_info/AppointmentInfo";
 import { getProviderName } from "@/utils/getProviderName";
 import type { TAppointment } from "@/utils/types/appointment";
 import type { TProvider } from "@/utils/types/provider";
-import { useOpen } from "@/utils/useOpen";
+import { useInlineEditToggle } from "@/utils/useInlineEditToggle";
 import { AppointmentEditContainer } from "./AppointmentEditContainer";
 
 interface TAppointmentInfoContainerProps {
@@ -17,22 +16,8 @@ function AppointmentInfoContainer({
   appointment,
   providers,
 }: TAppointmentInfoContainerProps) {
-  const { open, onClose, onOpen } = useOpen();
-  const editButtonRef = useRef<HTMLButtonElement>(null);
-  const returnFocus = useRef(false);
-
-  // Leaving the form unmounts it; send focus back to the Edit button instead of <body>
-  const closeForm = () => {
-    returnFocus.current = true;
-    onClose();
-  };
-
-  useEffect(() => {
-    if (!open && returnFocus.current) {
-      returnFocus.current = false;
-      editButtonRef.current?.focus();
-    }
-  }, [open]);
+  // Swaps view ↔ form, returning focus to the Edit button when the form closes
+  const { open, onOpen, closeForm, triggerRef: editButtonRef } = useInlineEditToggle();
 
   if (open) {
     return (

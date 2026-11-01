@@ -1,6 +1,6 @@
 import { Button, CloseButton } from "@chakra-ui/react/button";
 import { Dialog } from "@chakra-ui/react/dialog";
-import { chakra } from "@chakra-ui/react/styled-system";
+import { DialogFormContent } from "@/components/ui/DialogFormContent";
 import { FormProvider, type UseFormReturn } from "react-hook-form";
 import { AppointmentNotesForm } from "@/components/appointment_notes/AppointmentNotesForm";
 import type { TAppointmentNotesFormValues } from "@/components/appointment_notes/types";
@@ -26,31 +26,25 @@ function AppointmentNoteDialogContent({
 
   return (
     <FormProvider {...form}>
-      <Dialog.Content>
-        <chakra.form
-          display="contents"
-          onSubmit={(e) => void submitForm(e)}
-          noValidate
-        >
-          <Dialog.Header>
-            <Dialog.Title>{title}</Dialog.Title>
-          </Dialog.Header>
-          <Dialog.Body>
-            <AppointmentNotesForm />
-          </Dialog.Body>
-          <Dialog.Footer>
-            <Dialog.ActionTrigger asChild>
-              <Button variant="outline">Cancel</Button>
-            </Dialog.ActionTrigger>
-            <Button type="submit" loading={isSubmitting}>
-              Save
-            </Button>
-          </Dialog.Footer>
-          <Dialog.CloseTrigger asChild>
-            <CloseButton size="sm" />
-          </Dialog.CloseTrigger>
-        </chakra.form>
-      </Dialog.Content>
+      <DialogFormContent onSubmit={(e) => void submitForm(e)}>
+        <Dialog.Header>
+          <Dialog.Title>{title}</Dialog.Title>
+        </Dialog.Header>
+        <Dialog.Body>
+          <AppointmentNotesForm />
+        </Dialog.Body>
+        <Dialog.Footer>
+          <Dialog.ActionTrigger asChild>
+            <Button variant="outline">Cancel</Button>
+          </Dialog.ActionTrigger>
+          <Button type="submit" loading={isSubmitting}>
+            Save
+          </Button>
+        </Dialog.Footer>
+        <Dialog.CloseTrigger asChild>
+          <CloseButton size="sm" />
+        </Dialog.CloseTrigger>
+      </DialogFormContent>
     </FormProvider>
   );
 }

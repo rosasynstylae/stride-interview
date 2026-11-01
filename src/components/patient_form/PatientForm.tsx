@@ -5,6 +5,7 @@ import { type Control } from "react-hook-form";
 import type { TPatientFormValues } from "./types";
 import { TextField } from "../ui/TextField";
 import { DateField } from "../ui/DateField";
+import { toLocalISODate } from "@/utils/toLocalISODate";
 
 interface TPatientFormProps {
   control: Control<TPatientFormValues>;
@@ -13,7 +14,7 @@ interface TPatientFormProps {
 function PatientForm({ control }: TPatientFormProps) {
   // Lazy useState rather than useMemo: React's purity rule allows new Date() here
   const [today] = useState(() =>
-    parseDate(new Date().toLocaleDateString("en-CA")),
+    parseDate(toLocalISODate()),
   );
 
   return (

@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { toLocalISODate } from "@/utils/toLocalISODate";
 import type { TPatientFormValues } from "./types";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,7 +8,7 @@ import {
   parsePhoneNumberWithError,
 } from "libphonenumber-js";
 
-const todayLocal = () => new Date().toLocaleDateString("en-CA");
+const todayLocal = () => toLocalISODate();
 
 const patientSchema = z.object({
   firstName: z.string().trim().min(1, "First name is required"),

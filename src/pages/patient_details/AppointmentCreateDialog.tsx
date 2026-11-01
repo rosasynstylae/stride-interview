@@ -1,6 +1,6 @@
-import { chakra } from "@chakra-ui/react/styled-system";
 import { Button, CloseButton } from "@chakra-ui/react/button";
 import { Dialog } from "@chakra-ui/react/dialog";
+import { DialogFormContent } from "@/components/ui/DialogFormContent";
 import { Portal } from "@chakra-ui/react/portal";
 import { useCreatePatientAppointment } from "@/api/patient/createPatientAppointment";
 import { AppointmentForm } from "@/components/appointment_form/AppointmentForm";
@@ -62,37 +62,26 @@ function AppointmentCreateDialog({
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          {/* The form sits inside the dialog (role="dialog" isn't allowed on <form>);
-              display: contents keeps Body/Footer laid out as the dialog's own children */}
           <FormProvider {...form}>
-            <Dialog.Content>
-              <chakra.form
-                display="contents"
-                onSubmit={(e) => void submitForm(e)}
-                noValidate
-              >
-                <Dialog.Header>
-                  <Dialog.Title>Add appointment</Dialog.Title>
-                </Dialog.Header>
-                <Dialog.Body>
-                  <AppointmentForm providers={providerOptions} />
-                </Dialog.Body>
-                <Dialog.Footer>
-                  <Dialog.ActionTrigger asChild>
-                    <Button variant="outline">Cancel</Button>
-                  </Dialog.ActionTrigger>
-                  <Button
-                    type="submit"
-                    loading={isSubmitting}
-                  >
-                    Save
-                  </Button>
-                </Dialog.Footer>
-                <Dialog.CloseTrigger asChild>
-                  <CloseButton size="sm" />
-                </Dialog.CloseTrigger>
-              </chakra.form>
-            </Dialog.Content>
+            <DialogFormContent onSubmit={(e) => void submitForm(e)}>
+              <Dialog.Header>
+                <Dialog.Title>Add appointment</Dialog.Title>
+              </Dialog.Header>
+              <Dialog.Body>
+                <AppointmentForm providers={providerOptions} />
+              </Dialog.Body>
+              <Dialog.Footer>
+                <Dialog.ActionTrigger asChild>
+                  <Button variant="outline">Cancel</Button>
+                </Dialog.ActionTrigger>
+                <Button type="submit" loading={isSubmitting}>
+                  Save
+                </Button>
+              </Dialog.Footer>
+              <Dialog.CloseTrigger asChild>
+                <CloseButton size="sm" />
+              </Dialog.CloseTrigger>
+            </DialogFormContent>
           </FormProvider>
         </Dialog.Positioner>
       </Portal>

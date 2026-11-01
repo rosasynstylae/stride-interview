@@ -1,4 +1,4 @@
-import { act, screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor, within } from "@testing-library/react";
 import { PATIENT_URLS } from "@/api/urls";
 import { toAppointmentFormValues } from "@/components/appointment_form/toAppointmentFormValues";
 import { Toaster } from "@/components/ui/toaster";
@@ -30,10 +30,10 @@ const PROVIDERS: TProvider[] = [
 const PATH = apiPath(PATIENT_URLS.APPOINTMENT_DETAILS("1", "3"));
 
 /** Toaster's mount update is flushed inside act() */
-async function renderContainer() {
+async function renderContainer(providers: TProvider[] = PROVIDERS) {
   const result = renderWithProviders(
     <>
-      <AppointmentInfoContainer appointment={APPOINTMENT} providers={PROVIDERS} />
+      <AppointmentInfoContainer appointment={APPOINTMENT} providers={providers} />
       <Toaster />
     </>,
   );
@@ -69,6 +69,16 @@ describe("AppointmentInfoContainer", () => {
     expect(select(/type/i)).toHaveValue("Initial Evaluation");
     expect(select(/status/i)).toHaveValue("Scheduled");
     expect(select(/provider/i)).toHaveValue("1");
+  });
+
+  it("keeps the current provider selected when the providers list is empty (loading or failed)", async () => {
+    const { user } = await renderContainer([]);
+
+    await user.click(editButton());
+
+    // Not the "Select a provider" placeholder: the real current value, which is what gets saved
+    expect(select(/provider/i)).toHaveValue("1");
+    expect(within(select(/provider/i)).getByRole("option", { selected: true })).toHaveTextContent("Provider #1");
   });
 
   it("moves focus into the form, and back to the Edit button on cancel", async () => {

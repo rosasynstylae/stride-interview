@@ -1,14 +1,17 @@
 import type { TAppointment } from "@/utils/types/appointment";
+import { toLocalISODate } from "@/utils/toLocalISODate";
 import type { TAppointmentFormValues } from "./types";
 
-const timeFormat = new Intl.DateTimeFormat("en-GB", {
-  hour: "2-digit",
-  minute: "2-digit",
-  hourCycle: "h23",
-});
+const pad = (n: number) => String(n).padStart(2, "0");
 
-/** "HH:mm" (24h, local time), as <input type="time"> expects */
-const toLocalTime = (iso: string): string => timeFormat.format(new Date(iso));
+/**
+ * "HH:mm" (24h, local time), as <input type="time"> expects. Built from parts,
+ * like toLocalISODate, rather than relying on a locale's time format.
+ */
+const toLocalTime = (iso: string): string => {
+  const date = new Date(iso);
+  return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+};
 
 /**
  * API appointment → form values. The inverse of toISODateTime: both use the
@@ -18,7 +21,7 @@ const toLocalTime = (iso: string): string => timeFormat.format(new Date(iso));
 const toAppointmentFormValues = (
   appointment: TAppointment,
 ): TAppointmentFormValues => ({
-  date: new Date(appointment.startTime).toLocaleDateString("en-CA"),
+  date: toLocalISODate(new Date(appointment.startTime)),
   startTime: toLocalTime(appointment.startTime),
   endTime: toLocalTime(appointment.endTime),
   type: appointment.type,
