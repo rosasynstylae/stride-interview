@@ -5,16 +5,17 @@ import {
 } from "@/utils/types/appointment";
 import type { TAppointmentFormValues } from "./types";
 
-const appointmentTimes = z.object({
-  // "HH:mm", as produced by <input type="time">
+const appointmentDateTimes = z.object({
+  // "YYYY-MM-DD" from the date picker, "HH:mm" from <input type="time">
+  startDate: z.iso.date({ error: "Enter a start date" }),
   startTime: z.iso.time({ precision: -1, error: "Enter a start time" }),
+  endDate: z.iso.date({ error: "Enter an end date" }),
   endTime: z.iso.time({ precision: -1, error: "Enter an end time" }),
 });
 
 const appointmentSchema = z
   .object({
-    date: z.iso.date({ error: "Enter a valid date" }),
-    ...appointmentTimes.shape,
+    ...appointmentDateTimes.shape,
     // string in (selects start empty), enum out
     type: z.string().pipe(z.enum(APPOINTMENT_TYPE, { error: "Choose a type" })),
     status: z
@@ -22,20 +23,24 @@ const appointmentSchema = z
       .pipe(z.enum(APPOINTMENT_STATUS, { error: "Choose a status" })),
     providerId: z.string().min(1, "Choose a provider"),
   })
-  // Zero-padded "HH:mm" strings compare correctly as text
-  .refine((v) => v.endTime > v.startTime, {
-    path: ["endTime"],
-    message: "End time must be after start time",
-    // By default Zod skips object refinements when another field (e.g. an
-    // empty select) fails; only the two times matter here
-    when: (payload) => appointmentTimes.safeParse(payload.value).success,
-  });
+  // Zero-padded "YYYY-MM-DDTHH:mm" strings compare correctly as text, across days too
+  .refine(
+    (v) => `${v.endDate}T${v.endTime}` > `${v.startDate}T${v.startTime}`,
+    {
+      path: ["endTime"],
+      message: "End must be after start",
+      // By default Zod skips object refinements when another field (e.g. an
+      // empty select) fails; only the four date/time fields matter here
+      when: (payload) => appointmentDateTimes.safeParse(payload.value).success,
+    },
+  );
 
 type TAppointmentFormOutput = z.output<typeof appointmentSchema>;
 
 const DEFAULT_VALUES: TAppointmentFormValues = {
-  date: "",
+  startDate: "",
   startTime: "",
+  endDate: "",
   endTime: "",
   type: "",
   status: "",

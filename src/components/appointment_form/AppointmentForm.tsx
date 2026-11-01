@@ -1,10 +1,10 @@
 import { Flex } from "@chakra-ui/react/flex";
 import type { TSelectOption } from "../ui/SelectField";
 import {
-  AppointmentDateField,
+  AppointmentEndFields,
   AppointmentProviderField,
   AppointmentStatusField,
-  AppointmentTimeFields,
+  AppointmentStartFields,
   AppointmentTypeField,
 } from "./FormFields";
 
@@ -15,8 +15,8 @@ interface TAppointmentFormProps {
 function AppointmentForm({ providers }: TAppointmentFormProps) {
   return (
     <Flex direction="column" gap={4}>
-      <AppointmentDateField />
-      <AppointmentTimeFields />
+      <AppointmentStartFields />
+      <AppointmentEndFields />
       <AppointmentTypeField />
       <AppointmentStatusField />
       <AppointmentProviderField providers={providers} />

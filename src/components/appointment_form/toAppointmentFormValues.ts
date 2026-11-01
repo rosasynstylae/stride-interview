@@ -1,32 +1,29 @@
 import type { TAppointment } from "@/utils/types/appointment";
 import { toLocalISODate } from "@/utils/toLocalISODate";
+import { toLocalTime } from "@/utils/toLocalTime";
 import type { TAppointmentFormValues } from "./types";
 
-const pad = (n: number) => String(n).padStart(2, "0");
-
 /**
- * "HH:mm" (24h, local time), as <input type="time"> expects. Built from parts,
- * like toLocalISODate, rather than relying on a locale's time format.
- */
-const toLocalTime = (iso: string): string => {
-  const date = new Date(iso);
-  return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
-};
-
-/**
- * API appointment → form values. The inverse of toISODateTime: both use the
- * viewer's local time, so saving an unchanged form sends the same instants back.
- * (Appointments are instants, unlike birthdays, which are read in UTC.)
+ * API appointment → form values. The inverse of toAppointmentInstants: both use
+ * the viewer's local time, so saving an unchanged form sends the same instants
+ * back. Start and end each get their own date, so appointments that cross
+ * midnight load correctly. (Appointments are instants, unlike birthdays.)
  */
 const toAppointmentFormValues = (
   appointment: TAppointment,
-): TAppointmentFormValues => ({
-  date: toLocalISODate(new Date(appointment.startTime)),
-  startTime: toLocalTime(appointment.startTime),
-  endTime: toLocalTime(appointment.endTime),
-  type: appointment.type,
-  status: appointment.status,
-  providerId: appointment.providerId,
-});
+): TAppointmentFormValues => {
+  const start = new Date(appointment.startTime);
+  const end = new Date(appointment.endTime);
+
+  return {
+    startDate: toLocalISODate(start),
+    startTime: toLocalTime(start),
+    endDate: toLocalISODate(end),
+    endTime: toLocalTime(end),
+    type: appointment.type,
+    status: appointment.status,
+    providerId: appointment.providerId,
+  };
+};
 
 export { toAppointmentFormValues };

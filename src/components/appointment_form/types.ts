@@ -1,6 +1,7 @@
 interface TAppointmentFormValues {
-  date: string;
+  startDate: string;
   startTime: string;
+  endDate: string;
   endTime: string;
   type: string;
   status: string;

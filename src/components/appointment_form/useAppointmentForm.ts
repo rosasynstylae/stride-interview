@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { TAppointmentFormValues } from "./types";
-import { useRevalidateEndTime } from "./useRevalidateEndTime";
+import { useAppointmentEndSync } from "./useAppointmentEndSync";
 import {
   APPOINTMENT_FORM_DEFAULT_VALUES,
   appointmentSchema,
@@ -28,7 +28,7 @@ const useAppointmentForm = ({
     mode: "onTouched",
   });
 
-  useRevalidateEndTime(formInfo);
+  useAppointmentEndSync(formInfo);
 
   const { handleSubmit } = formInfo;
 

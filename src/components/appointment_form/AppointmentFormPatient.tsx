@@ -3,10 +3,10 @@ import { useFormContext } from "react-hook-form";
 import { SelectField, type TSelectOption } from "../ui/SelectField";
 import type { TAppointmentFormPatientValues } from "./types";
 import {
-  AppointmentDateField,
+  AppointmentEndFields,
   AppointmentProviderField,
   AppointmentStatusField,
-  AppointmentTimeFields,
+  AppointmentStartFields,
   AppointmentTypeField,
 } from "./FormFields";
 
@@ -44,8 +44,8 @@ function AppointmentFormPatient({
   return (
     <Flex direction="column" gap={4}>
       <AppointmentPatientField patients={patients} />
-      <AppointmentDateField />
-      <AppointmentTimeFields />
+      <AppointmentStartFields />
+      <AppointmentEndFields />
       <AppointmentTypeField />
       <AppointmentStatusField />
       <AppointmentProviderField providers={providers} />

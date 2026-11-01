@@ -7,7 +7,7 @@ import { AppointmentForm } from "@/components/appointment_form/AppointmentForm";
 import { useAppointmentForm } from "@/components/appointment_form/useAppointmentForm";
 import type { TProvider } from "@/utils/types/provider";
 import { useOpen } from "@/utils/useOpen";
-import { toISODateTime } from "@/utils/toISODateTime";
+import { toAppointmentInstants } from "@/components/appointment_form/toAppointmentInstants";
 import { toProviderOption } from "@/utils/selectOptions";
 import { useMemo } from "react";
 import { FormProvider } from "react-hook-form";
@@ -25,13 +25,12 @@ function AppointmentCreateDialog({
   const { mutateAsync } = useCreatePatientAppointment();
 
   const { submitForm, ...form } = useAppointmentForm({
-    onSubmit: async ({ date, startTime, endTime, ...rest }) => {
+    onSubmit: async ({ startDate, startTime, endDate, endTime, ...rest }) => {
       try {
         await mutateAsync({
           ...rest,
           patientId,
-          startTime: toISODateTime(date, startTime),
-          endTime: toISODateTime(date, endTime),
+          ...toAppointmentInstants({ startDate, startTime, endDate, endTime }),
         });
         onClose();
       } catch {

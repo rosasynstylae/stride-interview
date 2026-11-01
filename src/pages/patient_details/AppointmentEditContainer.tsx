@@ -7,7 +7,7 @@ import { AppointmentForm } from "@/components/appointment_form/AppointmentForm";
 import { toAppointmentFormValues } from "@/components/appointment_form/toAppointmentFormValues";
 import { useAppointmentForm } from "@/components/appointment_form/useAppointmentForm";
 import { toProviderOptions } from "@/utils/selectOptions";
-import { toISODateTime } from "@/utils/toISODateTime";
+import { toAppointmentInstants } from "@/components/appointment_form/toAppointmentInstants";
 import type { TAppointment } from "@/utils/types/appointment";
 import type { TProvider } from "@/utils/types/provider";
 
@@ -28,7 +28,7 @@ function AppointmentEditContainer({
 
   const { submitForm, ...form } = useAppointmentForm({
     defaultValues: toAppointmentFormValues(appointment),
-    onSubmit: async ({ date, startTime, endTime, ...rest }) => {
+    onSubmit: async ({ startDate, startTime, endDate, endTime, ...rest }) => {
       try {
         await mutateAsync({
           patientId: appointment.patientId,
@@ -36,8 +36,7 @@ function AppointmentEditContainer({
           appointmentInfo: {
             ...rest,
             patientId: appointment.patientId,
-            startTime: toISODateTime(date, startTime),
-            endTime: toISODateTime(date, endTime),
+            ...toAppointmentInstants({ startDate, startTime, endDate, endTime }),
           },
         });
         onSuccess?.();
@@ -51,7 +50,7 @@ function AppointmentEditContainer({
 
   // The Edit button that opened this is gone, so move focus into the form
   useEffect(() => {
-    setFocus("date");
+    setFocus("startDate");
   }, [setFocus]);
 
   const { isSubmitting } = form.formState;

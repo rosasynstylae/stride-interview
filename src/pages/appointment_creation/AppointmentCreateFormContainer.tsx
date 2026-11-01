@@ -6,7 +6,7 @@ import { useCreatePatientAppointment } from "@/api/patient/createPatientAppointm
 import { AppointmentFormPatient } from "@/components/appointment_form/AppointmentFormPatient";
 import { useAppointmentFormPatient } from "@/components/appointment_form/useAppointmentFormPatient";
 import { toPatientOption, toProviderOption } from "@/utils/selectOptions";
-import { toISODateTime } from "@/utils/toISODateTime";
+import { toAppointmentInstants } from "@/components/appointment_form/toAppointmentInstants";
 import type { TPatient } from "@/utils/types/patient";
 import type { TProvider } from "@/utils/types/provider";
 import { FormProvider } from "react-hook-form";
@@ -24,13 +24,12 @@ function AppointmentCreateFormContainer({
   const { mutateAsync } = useCreatePatientAppointment();
 
   const { submitForm, ...form } = useAppointmentFormPatient({
-    onSubmit: async ({ date, startTime, endTime, patientId, ...rest }) => {
+    onSubmit: async ({ startDate, startTime, endDate, endTime, patientId, ...rest }) => {
       try {
         await mutateAsync({
           ...rest,
           patientId,
-          startTime: toISODateTime(date, startTime),
-          endTime: toISODateTime(date, endTime),
+          ...toAppointmentInstants({ startDate, startTime, endDate, endTime }),
         });
         await navigate(`/patients/${patientId}`);
       } catch {

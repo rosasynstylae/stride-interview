@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react/box";
 import { Flex } from "@chakra-ui/react/flex";
 import { useFormContext } from "react-hook-form";
 import {
@@ -15,37 +16,50 @@ import type {
 const toOptions = (values: Record<string, string>): TSelectOption[] =>
   Object.values(values).map((v) => ({ label: v, value: v }));
 
-function AppointmentDateField() {
-  const { control } = useFormContext<
-    TAppointmentFormValues | TAppointmentFormPatientValues
-  >();
-
-  return <DateField control={control} name="date" label="Date" required />;
+interface TDateTimePairProps {
+  /** Which end of the appointment: "start" or "end" */
+  which: "start" | "end";
 }
 
-function AppointmentTimeFields() {
+/**
+ * A date + time pair, side by side when there's room and wrapping onto two
+ * lines on narrow screens (each field keeps at least ~14rem).
+ */
+function AppointmentDateTimePair({ which }: TDateTimePairProps) {
   const { control } = useFormContext<
     TAppointmentFormValues | TAppointmentFormPatientValues
   >();
+  const label = which === "start" ? "Start" : "End";
 
   return (
-    <Flex direction={{ base: "column", md: "row" }} gap={4}>
-      <TextField
-        control={control}
-        name="startTime"
-        label="Start time"
-        type="time"
-        required
-      />
-      <TextField
-        control={control}
-        name="endTime"
-        label="End time"
-        type="time"
-        required
-      />
+    <Flex wrap="wrap" gap={4}>
+      <Box flex="1 1 14rem" minW={0}>
+        <DateField
+          control={control}
+          name={which === "start" ? "startDate" : "endDate"}
+          label={`${label} date`}
+          required
+        />
+      </Box>
+      <Box flex="1 1 14rem" minW={0}>
+        <TextField
+          control={control}
+          name={which === "start" ? "startTime" : "endTime"}
+          label={`${label} time`}
+          type="time"
+          required
+        />
+      </Box>
     </Flex>
   );
+}
+
+function AppointmentStartFields() {
+  return <AppointmentDateTimePair which="start" />;
+}
+
+function AppointmentEndFields() {
+  return <AppointmentDateTimePair which="end" />;
 }
 
 const TYPE_OPTIONS = toOptions(APPOINTMENT_TYPE);
@@ -110,8 +124,8 @@ function AppointmentProviderField({
 }
 
 export {
-  AppointmentDateField,
-  AppointmentTimeFields,
+  AppointmentStartFields,
+  AppointmentEndFields,
   AppointmentTypeField,
   AppointmentStatusField,
   AppointmentProviderField,

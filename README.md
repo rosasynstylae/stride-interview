@@ -31,7 +31,15 @@ Used this to easily handle fetching states and reduced-fetching on queries that 
 ## react-hook-form
 quick way to get all of the validation/dirty state needed. zod because well used, small, and easy
 
+## Appointment Create Times
+Always update the end date/end time when the start date/end date updates
+such that the same amount of time between the start and end remains.
+I decided to do this to make it a little less clunky to update 
+appointments to different days/times, as I am assuming that
+appointments are generally the same amount of time (defaulted to 1hr)
+
 # Nice to Haves
+- Cleaner Scheduling UI for appointments (the date/time fields is a little clunky)
 - Patient list filtering (frontend only, obvs)
 - Patient details header/title use the patient name
 - Appointment details header/title use the patient name + appointment date
@@ -64,3 +72,7 @@ Nice to Have: some sort of "fullness" indicator for a page
 Currently the repro allows you to push to main, that should be
 turned off, PRs with approvals required, and tests run that are
 also required to pass before merging is allowed
+
+## Settings
+Related to feature flags, would be good to have settings set up.
+The setting I can think of needing currently is the "default appointment time" for auto-fill on the appointment create.

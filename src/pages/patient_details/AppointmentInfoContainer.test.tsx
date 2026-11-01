@@ -63,7 +63,8 @@ describe("AppointmentInfoContainer", () => {
 
     const expected = toAppointmentFormValues(APPOINTMENT);
     expect(screen.getByRole("form", { name: "Edit appointment" })).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: /date/i })).toHaveValue("02/14/2025");
+    expect(screen.getByRole("textbox", { name: /start date/i })).toHaveValue("02/14/2025");
+    expect(screen.getByRole("textbox", { name: /end date/i })).toHaveValue("02/14/2025");
     expect(screen.getByLabelText(/start time/i)).toHaveValue(expected.startTime);
     expect(screen.getByLabelText(/end time/i)).toHaveValue(expected.endTime);
     expect(select(/type/i)).toHaveValue("Initial Evaluation");
@@ -85,7 +86,7 @@ describe("AppointmentInfoContainer", () => {
     const { user } = await renderContainer();
 
     await user.click(editButton());
-    await waitFor(() => expect(screen.getByRole("textbox", { name: /date/i })).toHaveFocus());
+    await waitFor(() => expect(screen.getByRole("textbox", { name: /start date/i })).toHaveFocus());
 
     await user.click(screen.getByRole("button", { name: "Cancel" }));
     expect(screen.queryByRole("form")).not.toBeInTheDocument();
