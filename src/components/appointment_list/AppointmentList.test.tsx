@@ -54,22 +54,28 @@ describe("AppointmentList", () => {
     expect(screen.getByText("No Appointments Found")).toBeInTheDocument();
   });
 
-  it("adds a visually hidden 'Notes' column only when a row action is given", () => {
-    const { rerender } = renderWithProviders(
+  it("shows the plain date by default", () => {
+    renderWithProviders(
       <AppointmentList appointments={[appointment({})]} providers={providers} />,
     );
-    expect(screen.queryByRole("columnheader", { name: "Notes" })).not.toBeInTheDocument();
 
-    rerender(
+    const row = screen.getAllByRole("row")[1];
+    expect(within(row).getByText("Feb 14, 2025")).toBeInTheDocument();
+    expect(within(row).queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("renders the date cell through renderDateCell when given", () => {
+    renderWithProviders(
       <AppointmentList
         appointments={[appointment({})]}
         providers={providers}
-        renderRowAction={(a) => <button type="button">Notes for {a.id}</button>}
+        renderDateCell={(a) => <button type="button">Open {a.id}</button>}
       />,
     );
 
-    expect(screen.getByRole("columnheader", { name: "Notes" })).toBeInTheDocument();
-    const row = screen.getAllByRole("row")[1];
-    expect(within(row).getByRole("button", { name: "Notes for 1" })).toBeInTheDocument();
+    const [dateCell] = within(screen.getAllByRole("row")[1]).getAllByRole("cell");
+    expect(within(dateCell).getByRole("button", { name: "Open 1" })).toBeInTheDocument();
+    // Still five columns: the slot replaces the date, it doesn't add a column
+    expect(screen.getAllByRole("columnheader")).toHaveLength(5);
   });
 });

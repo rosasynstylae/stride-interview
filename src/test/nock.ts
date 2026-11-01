@@ -18,9 +18,11 @@ function setupNock() {
   });
 
   afterEach(() => {
-    // Leftover mocks mean a request the test expected never happened
-    expect(nock.pendingMocks()).toEqual([]);
+    // Leftover mocks mean a request the test expected never happened.
+    // Clean up before asserting, so a failure here can't leak mocks into the next test.
+    const pending = nock.pendingMocks();
     nock.cleanAll();
+    expect(pending).toEqual([]);
   });
 
   afterAll(() => {

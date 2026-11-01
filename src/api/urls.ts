@@ -5,6 +5,8 @@ const PATIENT_URLS = {
   UPDATE: (id: string | number) => `patients/${encodeURIComponent(id)}`,
   APPOINTMENTS: (id: string) =>
     `patients/${encodeURIComponent(id)}/appointments`,
+  APPOINTMENT_DETAILS: (patientId: string, appointmentId: string) =>
+    `patients/${encodeURIComponent(patientId)}/appointments/${encodeURIComponent(appointmentId)}`,
 } as const;
 
 const PROVIDER_URLS = {

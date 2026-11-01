@@ -40,10 +40,13 @@ const useUpdateAppointmentNotes = () => {
     mutationFn: updateAppointmentNotes,
     // Prefix match also refreshes the detail key; returning keeps the mutation
     // pending until the row has the saved values
-    onSuccess: (_data, { patientId, appointmentId }) =>
-      queryClient.invalidateQueries({
+    onSuccess: async (_data, { patientId, appointmentId }) => {
+      await queryClient.invalidateQueries({
         queryKey: fetchAppointmentNotesListKey(patientId, appointmentId),
-      }),
+      });
+      // The form stays open after saving, so confirm it
+      toaster.create({ type: "success", title: "Note saved" });
+    },
     onError: () => {
       toaster.create({
         type: "error",

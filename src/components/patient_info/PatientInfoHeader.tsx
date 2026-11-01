@@ -1,5 +1,5 @@
 import type { TPatient } from "@/utils/types/patient";
-import { PageHeader } from "../PageHeader";
+import { ActionHeading } from "../ActionHeading";
 
 interface TPatientInfoHeaderProps {
   patient: TPatient;
@@ -8,9 +8,12 @@ interface TPatientInfoHeaderProps {
 
 function PatientInfoHeader({ patient, headerAction }: TPatientInfoHeaderProps) {
   return (
-    <PageHeader
+    <ActionHeading
       title={`${patient.firstName} ${patient.lastName}`}
       headerAction={headerAction}
+      alignItems="center"
+      gap={3}
+      justifyContent={undefined}
     />
   );
 }

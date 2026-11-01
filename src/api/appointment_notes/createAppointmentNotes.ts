@@ -34,11 +34,13 @@ const useCreateAppointmentNotes = () => {
   return useMutation({
     mutationKey: CREATE_APPOINTMENT_NOTES_KEY,
     mutationFn: createAppointmentNotes,
-    // Not awaited: the refetch swaps the dialog to "edit", so let it close first
-    onSuccess: (_data, { patientId, appointmentId }) => {
-      void queryClient.invalidateQueries({
+    // Returned so the mutation resolves only once the list shows the new note
+    // (the create form then clears beneath it, and can't double-submit meanwhile)
+    onSuccess: async (_data, { patientId, appointmentId }) => {
+      await queryClient.invalidateQueries({
         queryKey: fetchAppointmentNotesListKey(patientId, appointmentId),
       });
+      toaster.create({ type: "success", title: "Note added" });
     },
     onError: () => {
       toaster.create({

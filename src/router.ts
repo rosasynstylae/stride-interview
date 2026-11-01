@@ -6,7 +6,9 @@ const Home = lazy(() => import("@/pages/Home"));
 const AppointmentCreationPage = lazy(
   () => import("@/pages/appointment_creation/AppointmentCreationPage"),
 );
-const PatientListPage = lazy(() => import("@/pages/patient_list/PatientListPage"));
+const PatientListPage = lazy(
+  () => import("@/pages/patient_list/PatientListPage"),
+);
 const PatientDetailsPage = lazy(
   () => import("@/pages/patient_details/PatientDetailsPage"),
 );
@@ -17,7 +19,10 @@ const router = createBrowserRouter([
     ErrorBoundary: RouteErrorBoundary,
     children: [
       { index: true, Component: Home },
-      { path: "appointments", Component: AppointmentCreationPage },
+      {
+        path: "appointments",
+        Component: AppointmentCreationPage,
+      },
       {
         path: "patients",
         children: [

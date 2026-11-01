@@ -1,20 +1,12 @@
-import { Flex } from "@chakra-ui/react/flex";
-import { Heading } from "@chakra-ui/react/heading";
+import { ActionHeading } from "./ActionHeading";
 
 interface TPageHeaderProps {
-  title: string;
+  title: React.ReactNode;
   headerAction?: React.ReactNode;
 }
 
 function PageHeader({ title, headerAction }: TPageHeaderProps) {
-  return (
-    <Flex justifyContent="space-between" w="full">
-      <Heading as="h1" size="2xl">
-        {title}
-      </Heading>
-      {headerAction}
-    </Flex>
-  );
+  return <ActionHeading title={title} headerAction={headerAction} />;
 }
 
 export { PageHeader };

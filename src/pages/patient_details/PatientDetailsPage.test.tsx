@@ -1,15 +1,14 @@
-import nock from "nock";
 import { Route, Routes } from "react-router";
 import { screen, within } from "@testing-library/react";
-import { getFullUrl } from "@/api/api";
-import { APPOINTMENT_NOTES_URLS, PATIENT_URLS, PROVIDER_URLS } from "@/api/urls";
-import { API_BASE_URL } from "@/test/env";
+import { PATIENT_URLS, PROVIDER_URLS } from "@/api/urls";
+import { api, apiPath, setupNock } from "@/test/nock";
 import { renderWithProviders } from "@/test/render";
 import type { TAppointment } from "@/utils/types/appointment";
-import type { TAppointmentNotes } from "@/utils/types/appointmentNotes";
 import type { TPatient } from "@/utils/types/patient";
 import type { TProvider } from "@/utils/types/provider";
 import PatientDetailsPage from "./PatientDetailsPage";
+
+setupNock();
 
 const PATIENT: TPatient = {
   id: "1",
@@ -48,21 +47,6 @@ const APPOINTMENTS: TAppointment[] = [
   },
 ];
 
-const NOTES: TAppointmentNotes[] = [
-  {
-    id: "1",
-    appointmentId: "1",
-    createdAt: "",
-    chiefComplaint: "Broken toe",
-    treatmentPlan: "Toe exercises",
-    progress: "Incomplete",
-  },
-];
-
-/** Path nock should expect, built the same way the app builds the request URL */
-const path = (url: string) => getFullUrl(url).pathname;
-const api = () => nock(API_BASE_URL);
-
 interface TMockOptions {
   patient?: [number, unknown];
   appointments?: [number, unknown];
@@ -75,15 +59,9 @@ function mockPage({
   appointments = [200, APPOINTMENTS],
   providers = [200, PROVIDERS],
 }: TMockOptions = {}) {
-  api().get(path(PATIENT_URLS.DETAILS("1"))).reply(...patient);
-  api().get(path(PATIENT_URLS.APPOINTMENTS("1"))).reply(...appointments);
-  api().get(path(PROVIDER_URLS.FETCH_LIST)).reply(...providers);
-}
-
-/** Each appointment row fetches its own notes */
-function mockNotes() {
-  api().get(path(APPOINTMENT_NOTES_URLS.LIST("1", "1"))).reply(200, NOTES);
-  api().get(path(APPOINTMENT_NOTES_URLS.LIST("1", "2"))).reply(404, "Not found");
+  api().get(apiPath(PATIENT_URLS.DETAILS("1"))).reply(...patient);
+  api().get(apiPath(PATIENT_URLS.APPOINTMENTS("1"))).reply(...appointments);
+  api().get(apiPath(PROVIDER_URLS.FETCH_LIST)).reply(...providers);
 }
 
 const renderPage = () =>
@@ -94,24 +72,9 @@ const renderPage = () =>
     { route: "/patients/1" },
   );
 
-beforeAll(() => {
-  nock.disableNetConnect();
-});
-
-afterEach(() => {
-  // Every mocked request should have been made
-  expect(nock.pendingMocks()).toEqual([]);
-  nock.cleanAll();
-});
-
-afterAll(() => {
-  nock.enableNetConnect();
-});
-
 describe("PatientDetailsPage", () => {
   it("shows the patient's details", async () => {
     mockPage();
-    mockNotes();
     renderPage();
 
     expect(
@@ -124,14 +87,11 @@ describe("PatientDetailsPage", () => {
       "tel:294.334.9483 x766",
     );
     expect(document.title).toBe("Patient Details | Stride");
-
-    // Let the per-row notes requests finish before the test ends
-    await screen.findAllByRole("button", { name: /notes for/ });
+    await screen.findByRole("table", { name: "Appointments" });
   });
 
-  it("lists appointments with provider names and a notes action per row", async () => {
+  it("lists appointments with provider names, each date opening its details", async () => {
     mockPage();
-    mockNotes();
     renderPage();
 
     const table = await screen.findByRole("table", { name: "Appointments" });
@@ -141,16 +101,12 @@ describe("PatientDetailsPage", () => {
     // Unknown provider ids fall back to "Provider #ID"
     expect(within(secondRow).getByText("Provider #99")).toBeInTheDocument();
 
-    // Existing notes → edit; none (404) → add
+    // The date cell is the drawer trigger; no details are fetched until it's opened
     expect(
-      await within(firstRow).findByRole("button", {
-        name: "Edit notes for Feb 14, 2025 appointment",
-      }),
+      within(firstRow).getByRole("button", { name: "View appointment on Feb 14, 2025" }),
     ).toBeInTheDocument();
     expect(
-      await within(secondRow).findByRole("button", {
-        name: "Add notes for Mar 1, 2025 appointment",
-      }),
+      within(secondRow).getByRole("button", { name: "View appointment on Mar 1, 2025" }),
     ).toBeInTheDocument();
   });
 
@@ -164,14 +120,11 @@ describe("PatientDetailsPage", () => {
 
   it("falls back to provider ids when providers fail to load", async () => {
     mockPage({ providers: [500, "boom"] });
-    mockNotes();
     renderPage();
 
     const table = await screen.findByRole("table", { name: "Appointments" });
     expect(within(table).getByText("Provider #1")).toBeInTheDocument();
     expect(within(table).getByText("Provider #99")).toBeInTheDocument();
-
-    await screen.findAllByRole("button", { name: /notes for/ });
   });
 
   it("keeps the patient visible when appointments fail to load", async () => {
@@ -199,9 +152,9 @@ describe("PatientDetailsPage", () => {
   it("shows the error page when the patient fails to load", async () => {
     // useFetchPatient retries non-404 errors 3 times (1 + 3 attempts); the test
     // QueryClient's retryDelay: 0 makes those retries instant
-    api().get(path(PATIENT_URLS.DETAILS("1"))).times(4).reply(500, "boom");
-    api().get(path(PATIENT_URLS.APPOINTMENTS("1"))).reply(200, APPOINTMENTS);
-    api().get(path(PROVIDER_URLS.FETCH_LIST)).reply(200, PROVIDERS);
+    api().get(apiPath(PATIENT_URLS.DETAILS("1"))).times(4).reply(500, "boom");
+    api().get(apiPath(PATIENT_URLS.APPOINTMENTS("1"))).reply(200, APPOINTMENTS);
+    api().get(apiPath(PROVIDER_URLS.FETCH_LIST)).reply(200, PROVIDERS);
     renderPage();
 
     // Match the stable part so copy tweaks to ErrorAlert don't break this

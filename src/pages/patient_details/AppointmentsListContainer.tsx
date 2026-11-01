@@ -5,7 +5,7 @@ import type { TAppointment } from "@/utils/types/appointment";
 import type { TProvider } from "@/utils/types/provider";
 import { Text } from "@chakra-ui/react/text";
 import { AppointmentCreateDialog } from "./AppointmentCreateDialog";
-import { AppointmentNotesDialog } from "./AppointmentNotesDialog";
+import { AppointmentDetailsDrawer } from "@/pages/patient_details/AppointmentDetailsDrawer";
 
 interface TAppointmentsListContainerProps {
   patientId: string;
@@ -43,11 +43,8 @@ function AppointmentsListContainer({
       headerAction={
         <AppointmentCreateDialog patientId={patientId} providers={providers} />
       }
-      renderRowAction={(appointment) => (
-        <AppointmentNotesDialog
-          patientId={patientId}
-          appointment={appointment}
-        />
+      renderDateCell={(appointment) => (
+        <AppointmentDetailsDrawer patientId={patientId} appointment={appointment} />
       )}
     />
   );

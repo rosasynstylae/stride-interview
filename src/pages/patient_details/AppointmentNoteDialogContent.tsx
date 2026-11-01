@@ -1,12 +1,12 @@
-import { chakra } from "@chakra-ui/react/styled-system";
 import { Button, CloseButton } from "@chakra-ui/react/button";
 import { Dialog } from "@chakra-ui/react/dialog";
+import { chakra } from "@chakra-ui/react/styled-system";
 import { FormProvider, type UseFormReturn } from "react-hook-form";
 import { AppointmentNotesForm } from "@/components/appointment_notes/AppointmentNotesForm";
 import type { TAppointmentNotesFormValues } from "@/components/appointment_notes/types";
 import type { TAppointmentNotesFormOutput } from "@/components/appointment_notes/useAppointmentNotesForm";
 
-interface TAppointmentNotesDialogContentProps {
+interface TAppointmentNoteDialogContentProps {
   title: string;
   form: UseFormReturn<
     TAppointmentNotesFormValues,
@@ -16,12 +16,12 @@ interface TAppointmentNotesDialogContentProps {
   submitForm: (e?: React.BaseSyntheticEvent) => Promise<void>;
 }
 
-/** Shared dialog body for creating and editing notes; the trigger lives in AppointmentNotesDialog */
-function AppointmentNotesDialogContent({
+/** Shared dialog body for adding and editing a note; each dialog owns its trigger */
+function AppointmentNoteDialogContent({
   title,
   form,
   submitForm,
-}: TAppointmentNotesDialogContentProps) {
+}: TAppointmentNoteDialogContentProps) {
   const { isSubmitting } = form.formState;
 
   return (
@@ -42,10 +42,7 @@ function AppointmentNotesDialogContent({
             <Dialog.ActionTrigger asChild>
               <Button variant="outline">Cancel</Button>
             </Dialog.ActionTrigger>
-            <Button
-              type="submit"
-              loading={isSubmitting}
-            >
+            <Button type="submit" loading={isSubmitting}>
               Save
             </Button>
           </Dialog.Footer>
@@ -58,4 +55,4 @@ function AppointmentNotesDialogContent({
   );
 }
 
-export { AppointmentNotesDialogContent };
+export { AppointmentNoteDialogContent };

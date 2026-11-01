@@ -17,6 +17,12 @@ const fetchPatientKey = (id: string | number): readonly string[] =>
 const fetchPatientAppointmentsKey = (id: string): readonly string[] =>
   [...FETCH_PATIENT_LIST_KEY, id, "appointments"] as const;
 
+const fetchPatientAppointmentKey = (
+  patientId: string,
+  appointmentId: string,
+): readonly string[] =>
+  [...fetchPatientAppointmentsKey(patientId), appointmentId] as const;
+
 const CREATE_PATIENT_APPOINTMENT_KEY: readonly string[] = [
   ...FETCH_PATIENT_LIST_KEY,
   "appointments",
@@ -54,6 +60,7 @@ export {
   UPDATE_PATIENT_KEY,
   fetchPatientKey,
   fetchPatientAppointmentsKey,
+  fetchPatientAppointmentKey,
   CREATE_PATIENT_APPOINTMENT_KEY,
   FETCH_PROVIDER_LIST_KEY,
   fetchAppointmentNotesListKey,
