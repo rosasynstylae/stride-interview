@@ -8,12 +8,11 @@ import { APIError } from "@/api/api";
 import { useFetchAppointmentNotesList } from "@/api/appointment_notes/fetchAppointmentNotesList";
 import { useFetchPatientAppointment } from "@/api/patient/fetchPatientAppointment";
 import { useFetchProviderList } from "@/api/provider/fetchProviderList";
-import { AppointmentInfo } from "@/components/appointment_info/AppointmentInfo";
+import { AppointmentInfoContainer } from "./AppointmentInfoContainer";
 import { AppointmentNote } from "@/components/appointment_note/AppointmentNote";
 import { ErrorAlert } from "@/components/ui/ErrorAlert";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { formatDate } from "@/utils/formatDate";
-import { getProviderName } from "@/utils/getProviderName";
 import type { TAppointmentNotes } from "@/utils/types/appointmentNotes";
 import { AppointmentNoteCreateDialog } from "./AppointmentNoteCreateDialog";
 import { AppointmentNoteEditDialog } from "./AppointmentNoteEditDialog";
@@ -93,13 +92,9 @@ function AppointmentDetailsContainer({
 
   return (
     <Flex direction="column" gap={8}>
-      <AppointmentInfo
+      <AppointmentInfoContainer
         appointment={appointment.data}
-        // Provider name is a nice-to-have: falls back to "Provider #ID" while loading or on error
-        providerName={getProviderName(
-          providers.data ?? [],
-          appointment.data.providerId,
-        )}
+        providers={providers.data ?? []}
       />
       <chakra.section aria-labelledby={notesHeadingId}>
         <Flex align="center" justify="space-between" gap={2} mb={4}>

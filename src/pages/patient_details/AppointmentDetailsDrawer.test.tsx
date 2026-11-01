@@ -71,6 +71,17 @@ async function renderDrawer() {
 
 type TUser = Awaited<ReturnType<typeof renderDrawer>>["user"];
 
+/**
+ * Finds a note dialog once it's ready to use. It opens on top of the drawer, and
+ * for a moment Chakra is still moving focus in and updating which layers are
+ * hidden; typing before then can fail to focus the field (seen under full-suite load).
+ */
+async function findReadyDialog(name: string) {
+  const dialog = await screen.findByRole("dialog", { name });
+  await waitFor(() => expect(dialog.contains(document.activeElement)).toBe(true));
+  return dialog;
+}
+
 async function openDrawer(user: TUser) {
   await user.click(screen.getByRole("button", { name: "View appointment on Feb 14, 2025" }));
   return screen.findByRole("dialog", { name: "Appointment · Feb 14, 2025" });
@@ -93,7 +104,7 @@ describe("AppointmentDetailsDrawer", () => {
     }
   });
 
-  it("shows the appointment's details with the provider's name", async () => {
+  it("shows the appointment's details with the provider's name, and lets it be edited", async () => {
     mockOpen();
     const { user } = await renderDrawer();
 
@@ -102,6 +113,7 @@ describe("AppointmentDetailsDrawer", () => {
     expect(await within(drawer).findByText("Initial Evaluation")).toBeInTheDocument();
     expect(within(drawer).getByText("Checked In")).toBeInTheDocument();
     expect(await within(drawer).findByText("Quinten Walker")).toBeInTheDocument();
+    expect(within(drawer).getByRole("button", { name: "Edit appointment" })).toBeInTheDocument();
   });
 
   it("lists notes oldest first under a 'Notes' heading with 'Add note' beside it", async () => {
@@ -153,7 +165,7 @@ describe("AppointmentDetailsDrawer", () => {
 
     const drawer = await openDrawer(user);
     await user.click(await within(drawer).findByRole("button", { name: "Edit Note 2 · Feb 20, 2025" }));
-    const dialog = await screen.findByRole("dialog", { name: "Edit note" });
+    const dialog = await findReadyDialog("Edit note");
     expect(within(dialog).getByRole("textbox", { name: /chief complaint/i })).toHaveValue("Sore heel");
 
     const progress = within(dialog).getByRole("textbox", { name: /progress/i });
@@ -180,7 +192,7 @@ describe("AppointmentDetailsDrawer", () => {
 
     const drawer = await openDrawer(user);
     await user.click(await within(drawer).findByRole("button", { name: "Add note" }));
-    const dialog = await screen.findByRole("dialog", { name: "Add note" });
+    const dialog = await findReadyDialog("Add note");
     await user.type(within(dialog).getByRole("textbox", { name: /chief complaint/i }), "Stiff knee");
     await user.type(within(dialog).getByRole("textbox", { name: /treatment plan/i }), "Toe exercises");
     await user.type(within(dialog).getByRole("textbox", { name: /progress/i }), "Incomplete");

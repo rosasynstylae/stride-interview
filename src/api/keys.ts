@@ -29,6 +29,12 @@ const CREATE_PATIENT_APPOINTMENT_KEY: readonly string[] = [
   "create",
 ] as const;
 
+const UPDATE_PATIENT_APPOINTMENT_KEY: readonly string[] = [
+  ...FETCH_PATIENT_LIST_KEY,
+  "appointments",
+  "update",
+] as const;
+
 const FETCH_PROVIDER_LIST_KEY: readonly string[] = [
   PROVIDER_URLS.FETCH_LIST,
 ] as const;
@@ -62,6 +68,7 @@ export {
   fetchPatientAppointmentsKey,
   fetchPatientAppointmentKey,
   CREATE_PATIENT_APPOINTMENT_KEY,
+  UPDATE_PATIENT_APPOINTMENT_KEY,
   FETCH_PROVIDER_LIST_KEY,
   fetchAppointmentNotesListKey,
   CREATE_APPOINTMENT_NOTES_KEY,

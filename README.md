@@ -32,17 +32,17 @@ Used this to easily handle fetching states and reduced-fetching on queries that 
 quick way to get all of the validation/dirty state needed. zod because well used, small, and easy
 
 # Nice to Haves
-- Appointment Edit
 - Patient list filtering (frontend only, obvs)
 - Patient details header/title use the patient name
 - Appointment details header/title use the patient name + appointment date
 - check appointment over booking for a patient (providers may have multiple people at the same time, but patients can't have multiple providers at the same time)
 - appointment create page: swap patient dropdown to a searchable select
-- pre-commit linting/tsc
-- consistent router urls (to make it DRYer)
+- pre-commit linting (maybe tsc?)
+- consistent router urls (to make it DRYer/more maintainable)
 - save provider details in a global context, rather than re-fetching so much
 - create a "DialogFormContent" to handle the form use-case smoothly with valid html
 - getPatientName util
+- Easier "check in" flow
 
 # Next Steps
 ## Auth
@@ -59,3 +59,8 @@ Would have the ability to filter by provider
 Would have the ability to create a new appointment
 Would have the ability to edit a new appointment
 Nice to Have: some sort of "fullness" indicator for a page
+
+## PRs with required test passing
+Currently the repro allows you to push to main, that should be
+turned off, PRs with approvals required, and tests run that are
+also required to pass before merging is allowed
