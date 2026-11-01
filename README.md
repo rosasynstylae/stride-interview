@@ -11,10 +11,6 @@ npm i
 npm run dev
 ```
 
-# TODO
-## Misc
-- nav link "current" styling
-
 # Nice to Haves
 - Testing
 - Appointment Edit
@@ -24,6 +20,7 @@ npm run dev
 - check appointment over booking for a patient (providers may have multiple people at the same time)
 - appointment create page: swap patient dropdown to a searchable select
 - pre-commit linting/tsc
+- consistent router urls (to make it DRYer)
 
 # Choices
 ## Oxlint over ESLint
