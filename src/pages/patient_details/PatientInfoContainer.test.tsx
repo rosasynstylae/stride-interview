@@ -1,4 +1,4 @@
-import { screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import { PATIENT_URLS } from "@/api/urls";
 import { Toaster } from "@/components/ui/toaster";
 import { PATIENT } from "@/test/fixtures";
@@ -8,21 +8,28 @@ import { PatientInfoContainer } from "./PatientInfoContainer";
 
 setupNock();
 
-const renderContainer = () =>
-  renderWithProviders(
+/**
+ * Toaster subscribes to the toast store on a setTimeout after mounting; flush
+ * that inside act() so it doesn't land after a synchronous test has finished.
+ */
+async function renderContainer() {
+  const result = renderWithProviders(
     <>
       <PatientInfoContainer patient={PATIENT} />
       <Toaster />
     </>,
   );
+  await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
+  return result;
+}
 
 const editButton = () => screen.getByRole("button", { name: "Edit Patient" });
 const firstName = () => screen.getByRole("textbox", { name: /first name/i });
 const save = () => screen.getByRole("button", { name: "Save" });
 
 describe("PatientInfoContainer", () => {
-  it("shows the patient's details with an edit button", () => {
-    renderContainer();
+  it("shows the patient's details with an edit button", async () => {
+    await renderContainer();
 
     expect(screen.getByRole("heading", { level: 1, name: "Eli Dicki" })).toBeInTheDocument();
     expect(screen.getByText("Feb 25, 2003")).toBeInTheDocument();
@@ -31,7 +38,7 @@ describe("PatientInfoContainer", () => {
   });
 
   it("switches to a form pre-filled with the patient's details", async () => {
-    const { user } = renderContainer();
+    const { user } = await renderContainer();
 
     await user.click(editButton());
 
@@ -44,7 +51,7 @@ describe("PatientInfoContainer", () => {
   });
 
   it("moves focus into the form, and back to the Edit button on cancel", async () => {
-    const { user } = renderContainer();
+    const { user } = await renderContainer();
 
     await user.click(editButton());
     // The Edit button is gone; focus shouldn't fall back to <body>
@@ -56,7 +63,7 @@ describe("PatientInfoContainer", () => {
   });
 
   it("discards edits on cancel", async () => {
-    const { user } = renderContainer();
+    const { user } = await renderContainer();
 
     await user.click(editButton());
     await user.clear(firstName());
@@ -72,7 +79,7 @@ describe("PatientInfoContainer", () => {
   });
 
   it("keeps Save available, and on an invalid submit shows the error and focuses the field", async () => {
-    const { user } = renderContainer();
+    const { user } = await renderContainer();
 
     await user.click(editButton());
     await user.clear(firstName());
@@ -97,7 +104,7 @@ describe("PatientInfoContainer", () => {
         return true;
       })
       .reply(200, { ...PATIENT, firstName: "Elias" });
-    const { user } = renderContainer();
+    const { user } = await renderContainer();
 
     await user.click(editButton());
     await user.clear(firstName());
@@ -116,7 +123,7 @@ describe("PatientInfoContainer", () => {
 
   it("stays in the form and shows a toast when saving fails", async () => {
     api().put(apiPath(PATIENT_URLS.UPDATE(PATIENT.id))).reply(500, "boom");
-    const { user } = renderContainer();
+    const { user } = await renderContainer();
 
     await user.click(editButton());
     await user.click(save());

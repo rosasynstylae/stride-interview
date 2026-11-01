@@ -33,7 +33,6 @@ quick way to get all of the validation/dirty state needed. zod because well used
 
 # Nice to Haves
 - Appointment Edit
-- Patient Edit
 - Patient list filtering (frontend only, obvs)
 - Patient details header/title use the patient name
 - check appointment over booking for a patient (providers may have multiple people at the same time, but patients can't have multiple providers at the same time)
@@ -41,7 +40,6 @@ quick way to get all of the validation/dirty state needed. zod because well used
 - pre-commit linting/tsc
 - consistent router urls (to make it DRYer)
 - save provider details in a global context, rather than re-fetching so much
-
 
 # Next Steps
 ## Auth

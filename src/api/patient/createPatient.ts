@@ -11,7 +11,7 @@ interface TCreatePatientParams {
 
 const createPatient = ({
   patientInfo,
-}: TCreatePatientParams): Promise<TPatient[]> => {
+}: TCreatePatientParams): Promise<TPatient> => {
   return apiAction(getFullUrl(PATIENT_URLS.CREATE), {
     method: "POST",
     ...handleJSONBody(patientInfo),
@@ -25,7 +25,11 @@ const useCreatePatient = () => {
     mutationKey: CREATE_PATIENT_KEY,
     mutationFn: createPatient,
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: FETCH_PATIENT_LIST_KEY });
+      // repulls only the list
+      void queryClient.invalidateQueries({
+        queryKey: FETCH_PATIENT_LIST_KEY,
+        exact: true,
+      });
     },
     onError: () => {
       toaster.create({

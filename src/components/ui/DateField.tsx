@@ -10,6 +10,7 @@ import {
 } from "react-hook-form";
 
 type TDateValue = ComponentProps<typeof DatePicker.Root>["max"];
+type TDateValues = NonNullable<ComponentProps<typeof DatePicker.Root>["value"]>;
 
 interface TDateFieldProps<
   T extends FieldValues,
@@ -21,6 +22,20 @@ interface TDateFieldProps<
   required?: boolean;
   min?: TDateValue;
   max?: TDateValue;
+}
+
+/**
+ * Form value ("YYYY-MM-DD") → DatePicker value. parseDate throws on anything
+ * else, which would crash the page mid-render; show an empty picker instead and
+ * let the form's schema report the bad value as a field error.
+ */
+function toDateValues(value: unknown): TDateValues {
+  if (typeof value !== "string" || !value) return [];
+  try {
+    return [parseDate(value)];
+  } catch {
+    return [];
+  }
 }
 
 function DateField<
@@ -43,7 +58,7 @@ function DateField<
             min={min}
             max={max}
             // Form stores an ISO date string ("YYYY-MM-DD"); DatePicker wants DateValue[]
-            value={field.value ? [parseDate(field.value)] : []}
+            value={toDateValues(field.value)}
             onValueChange={(e) => field.onChange(e.value[0]?.toString() ?? "")}
           >
             <DatePicker.Label>

@@ -10,13 +10,14 @@ import {
 const todayLocal = () => new Date().toLocaleDateString("en-CA");
 
 const patientSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
+  firstName: z.string().trim().min(1, "First name is required"),
+  lastName: z.string().trim().min(1, "Last name is required"),
   dateOfBirth: z.iso
     .date({ error: "Enter a valid date" })
     .refine((d) => d <= todayLocal(), "Birthday can't be in the future"),
   phoneNumber: z
     .string()
+    .trim()
     .refine((v) => isValidPhoneNumber(v, "US"), "Enter a valid phone number")
     .transform((v) => parsePhoneNumberWithError(v, "US").number),
 });

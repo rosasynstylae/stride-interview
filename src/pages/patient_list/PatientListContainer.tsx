@@ -6,9 +6,9 @@ import { PatientCreateDialog } from "./PatientCreateContainer";
 import { PageHeader } from "@/components/PageHeader";
 
 function PatientListContainer() {
-  const { data, isFetching, isError } = useFetchPatientList();
+  const { data, isPending, isError } = useFetchPatientList();
 
-  if (isFetching) {
+  if (isPending) {
     return (
       <>
         <PageHeader title="Patients" />
@@ -17,6 +17,10 @@ function PatientListContainer() {
     );
   }
 
+  // decided to always show error if an endpoint errors,
+  // as if the issue is a network blip, a refresh will fix.
+  // if the error is bigger than a network blip, we should show
+  // the error
   if (!data || isError) {
     return (
       <>

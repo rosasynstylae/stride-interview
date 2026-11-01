@@ -98,4 +98,19 @@ describe("PatientForm", () => {
     expect(onSave).toHaveBeenCalledTimes(1);
     expect(onSave.mock.calls[0][0]).toEqual({ ...VALID, phoneNumber: "+16135385542" });
   });
+
+  // DateField used to call parseDate unguarded, so bad input threw mid-render
+  it.each(["09/20/2006", "2006-09-20T16:33:50.410Z", "garbage"])(
+    "renders with a malformed date (%s) and reports it instead of crashing",
+    async (dateOfBirth) => {
+      const { user } = renderWithProviders(
+        <Harness defaultValues={{ ...VALID, dateOfBirth }} />,
+      );
+
+      expect(field(/date of birth/i)).toHaveValue("");
+
+      await user.click(save());
+      expect(await screen.findByText("Enter a valid date")).toBeInTheDocument();
+    },
+  );
 });

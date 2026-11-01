@@ -31,7 +31,7 @@ function ErrorAlert({ headingLevel = 1 }: TErrorAlertProps) {
       <Text>
         Try refreshing the page. If that doesn't work, contact us at{" "}
         <Link href="mailto:samantharoseabbott+fakeemail@gmail.com">
-          fakeemail@fakeemailplace.com
+          samantharoseabbott+fakeemail@gmail.com
         </Link>
       </Text>
     </Flex>

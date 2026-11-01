@@ -28,6 +28,10 @@ function AppointmentNotesDialog({
 
   if (isPending) return <LoadingSpinner size="sm" label="Loading notes" />;
 
+  // decided to always show error if an endpoint errors,
+  // as if the issue is a network blip, a refresh will fix.
+  // if the error is bigger than a network blip, we should show
+  // the error
   if (isError) {
     return (
       <Text textStyle="sm" color="fg.muted">
