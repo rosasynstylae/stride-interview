@@ -1,6 +1,7 @@
 import type { TSelectOption } from "@/components/ui/SelectField";
 import type { TPatient } from "./types/patient";
 import type { TProvider } from "./types/provider";
+import { getPatientName } from "./getPatientName";
 
 const toProviderOption = (p: TProvider): TSelectOption => ({
   label: `${p.firstName} ${p.lastName}`,
@@ -25,7 +26,7 @@ const toProviderOptions = (
 };
 
 const toPatientOption = (p: TPatient): TSelectOption => ({
-  label: `${p.firstName} ${p.lastName}`,
+  label: getPatientName(p),
   value: String(p.id),
 });
 

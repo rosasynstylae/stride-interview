@@ -48,7 +48,6 @@ appointments are generally the same amount of time (defaulted to 1hr)
 - pre-commit linting (maybe tsc?)
 - consistent router urls (to make it DRYer/more maintainable)
 - save provider details in a global context, rather than re-fetching so much
-- getPatientName util
 - Easier "check in" flow
 - Ability to filter out "completed" appointments
 

@@ -6,6 +6,7 @@ import { LuEye } from "react-icons/lu";
 import { IconButton } from "@chakra-ui/react/button";
 import { Table } from "@chakra-ui/react/table";
 import { formatBirthDate } from "@/utils/formatDate";
+import { getPatientName } from "@/utils/getPatientName";
 
 interface TPatientListProps {
   patients: TPatient[];
@@ -39,7 +40,7 @@ function PatientList({ patients }: TPatientListProps) {
                       <IconButton as="span" type={undefined} variant="ghost" aria-hidden="true">
                         <LuEye />
                       </IconButton>
-                      {p.firstName} {p.lastName}
+                      {getPatientName(p)}
                     </Link>
                   </LinkStyled>
                 </Table.Cell>
