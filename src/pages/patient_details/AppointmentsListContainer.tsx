@@ -4,8 +4,10 @@ import { sortAppointments } from "@/utils/sortAppointments";
 import type { TAppointment } from "@/utils/types/appointment";
 import type { TProvider } from "@/utils/types/provider";
 import { Text } from "@chakra-ui/react/text";
+import { AppointmentCreateDialog } from "./AppointmentCreateDialog";
 
 interface TAppointmentsListContainerProps {
+  patientId: string;
   appointments: TAppointment[];
   providers: TProvider[];
   isError: boolean;
@@ -13,6 +15,7 @@ interface TAppointmentsListContainerProps {
 }
 
 function AppointmentsListContainer({
+  patientId,
   appointments,
   providers,
   isError,
@@ -32,7 +35,15 @@ function AppointmentsListContainer({
 
   const sortedApts = sortAppointments(appointments);
 
-  return <AppointmentList appointments={sortedApts} providers={providers} />;
+  return (
+    <AppointmentList
+      appointments={sortedApts}
+      providers={providers}
+      headerAction={
+        <AppointmentCreateDialog patientId={patientId} providers={providers} />
+      }
+    />
+  );
 }
 
 export { AppointmentsListContainer };

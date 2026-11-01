@@ -51,6 +51,7 @@ npm run dev
 - Patient list filtering
 - Patient details header/title use the patient name (would use context, probably)
 - full appointments list, regardless of patient
+- check appointment double booking
 
 # Choices
 ## Oxlint over ESLint

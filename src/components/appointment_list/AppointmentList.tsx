@@ -15,6 +15,7 @@ import { Text } from "@chakra-ui/react/text";
 interface TAppointmentListProps {
   appointments: TAppointment[];
   providers: TProvider[];
+  headerAction?: React.ReactNode;
 }
 
 const STATUS_COLORS: Record<TAppointmentStatus, string> = {
@@ -30,14 +31,21 @@ const getProviderName = (providers: TProvider[], id: string): string => {
     : `Provider #${id}`;
 };
 
-function AppointmentList({ appointments, providers }: TAppointmentListProps) {
+function AppointmentList({
+  appointments,
+  providers,
+  headerAction,
+}: TAppointmentListProps) {
   const headingId = useId();
 
   return (
     <Flex direction="column" gap={2} w="full">
-      <Heading as="h2" size="lg" id={headingId}>
-        Appointments
-      </Heading>
+      <Flex justify="space-between" align="center" gap={2}>
+        <Heading as="h2" size="lg" id={headingId}>
+          Appointments
+        </Heading>
+        {headerAction}
+      </Flex>
       <Table.Root aria-labelledby={headingId}>
         <Table.Header>
           <Table.Row>

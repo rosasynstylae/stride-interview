@@ -27,5 +27,12 @@ interface TAppointment {
   createdAt: string;
 }
 
-export { APPOINTMENT_STATUS };
-export type { TAppointment, TAppointmentStatus };
+type TAppointmentInfo = Omit<TAppointment, "id" | "createdAt">;
+
+export { APPOINTMENT_STATUS, APPOINTMENT_TYPE };
+export type {
+  TAppointment,
+  TAppointmentInfo,
+  TAppointmentStatus,
+  TAppointmentType,
+};

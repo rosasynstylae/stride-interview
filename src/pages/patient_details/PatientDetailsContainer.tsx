@@ -43,6 +43,7 @@ function PatientDetailsContainer({ id }: TPatientDetailsContainerProps) {
     <Flex direction="column" gap={8} w="full">
       <PatientInfo patient={patient.data} />
       <AppointmentsListContainer
+        patientId={id}
         appointments={appointments.data ?? []}
         providers={providers.data ?? []}
         /* Wait for providers too, so names don't pop in after "Provider #ID" */

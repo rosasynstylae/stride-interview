@@ -12,12 +12,16 @@ function PatientCreateDialog() {
 
   const { submitForm, control, reset, formState } = usePatientForm({
     onSubmit: async (vals) => {
-      await mutateAsync({ patientInfo: vals });
-      onClose();
+      try {
+        await mutateAsync({ patientInfo: vals });
+        onClose();
+      } catch {
+        // The mutation's onError shows a toast; keep the dialog open with the values intact
+      }
     },
   });
 
-  console.log(formState.isValid, formState.isDirty)
+  const { isValid, isDirty, isSubmitting } = formState;
 
   return (
     <Dialog.Root
@@ -46,8 +50,8 @@ function PatientCreateDialog() {
                 </Dialog.ActionTrigger>
                 <Button
                   type="submit"
-                  disabled={!formState.isValid || !formState.isDirty}
-                  loading={formState.isSubmitting}
+                  disabled={!isValid || !isDirty}
+                  loading={isSubmitting}
                 >
                   Save
                 </Button>
