@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import { lazy } from "react";
+import { RouteErrorBoundary } from "@/components/RouteErrorBoundary";
 
 const Home = lazy(() => import("@/pages/Home"));
 const AppointmentCreationPage = lazy(
@@ -13,6 +14,7 @@ const PatientDetailsPage = lazy(
 const router = createBrowserRouter([
   {
     path: "/",
+    ErrorBoundary: RouteErrorBoundary,
     children: [
       { index: true, Component: Home },
       { path: "appointments", Component: AppointmentCreationPage },

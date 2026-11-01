@@ -14,7 +14,6 @@ npm run dev
 # TODO
 ## Misc
 - nav link "current" styling
-- error boundary
 
 # Nice to Haves
 - Testing
@@ -24,6 +23,7 @@ npm run dev
 - Patient details header/title use the patient name (would use context, probably)
 - check appointment over booking for a patient (providers may have multiple people at the same time)
 - appointment create page: swap patient dropdown to a searchable select
+- pre-commit linting/tsc
 
 # Choices
 ## Oxlint over ESLint

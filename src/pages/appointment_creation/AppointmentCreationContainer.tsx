@@ -1,8 +1,8 @@
-import { Text } from "@chakra-ui/react/text";
 import { useFetchPatientList } from "@/api/patient/fetchPatientList";
 import { useFetchProviderList } from "@/api/provider/fetchProviderList";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { AppointmentCreateFormContainer } from "./AppointmentCreateFormContainer";
+import { ErrorAlert } from "@/components/ui/ErrorAlert";
 
 function AppointmentCreationContainer() {
   // Both queries start immediately and run in parallel
@@ -12,12 +12,7 @@ function AppointmentCreationContainer() {
   if (providers.isPending || patients.isPending) return <LoadingSpinner />;
 
   if (providers.isError || patients.isError) {
-    return (
-      <Text>
-        There was an issue loading patients and providers. Please refresh and
-        try again.
-      </Text>
-    );
+    return <ErrorAlert />;
   }
 
   return (

@@ -8,6 +8,7 @@ import { Flex } from "@chakra-ui/react/flex";
 import { Text } from "@chakra-ui/react/text";
 import { AppointmentsListContainer } from "./AppointmentsListContainer";
 import { Heading } from "@chakra-ui/react/heading";
+import { ErrorAlert } from "@/components/ui/ErrorAlert";
 
 interface TPatientDetailsContainerProps {
   id: string;
@@ -36,7 +37,7 @@ function PatientDetailsContainer({ id }: TPatientDetailsContainerProps) {
     if (patient.error instanceof APIError && patient.error.status === 404) {
       return <PatientNotFound />;
     }
-    return <Text>There was an issue. Please refresh and try again.</Text>;
+    return <ErrorAlert />;
   }
 
   return (
