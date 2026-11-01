@@ -11,6 +11,7 @@ interface TPatientFormProps {
 }
 
 function PatientForm({ control }: TPatientFormProps) {
+  // Lazy useState rather than useMemo: React's purity rule allows new Date() here
   const [today] = useState(() =>
     parseDate(new Date().toLocaleDateString("en-CA")),
   );

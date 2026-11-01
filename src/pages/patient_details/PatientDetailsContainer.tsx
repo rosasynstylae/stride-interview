@@ -2,13 +2,13 @@ import { APIError } from "@/api/api";
 import { useFetchPatient } from "@/api/patient/fetchPatient";
 import { useFetchPatientAppointmentList } from "@/api/patient/fetchPatientAppointmentList";
 import { useFetchProviderList } from "@/api/provider/fetchProviderList";
-import { PatientInfo } from "@/components/patient_info/PatientInfo";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Flex } from "@chakra-ui/react/flex";
 import { Text } from "@chakra-ui/react/text";
 import { AppointmentsListContainer } from "./AppointmentsListContainer";
 import { Heading } from "@chakra-ui/react/heading";
 import { ErrorAlert } from "@/components/ui/ErrorAlert";
+import { PatientInfoContainer } from "./PatientInfoContainer";
 
 interface TPatientDetailsContainerProps {
   id: string;
@@ -44,7 +44,7 @@ function PatientDetailsContainer({ id }: TPatientDetailsContainerProps) {
     // minW={0}: as a child of <main>'s flex row this would otherwise refuse to
     // shrink below the table's width, so the page would widen instead of the table scrolling
     <Flex direction="column" gap={8} w="full" minW={0}>
-      <PatientInfo patient={patient.data} />
+      <PatientInfoContainer patient={patient.data} />
       <AppointmentsListContainer
         patientId={id}
         appointments={appointments.data ?? []}

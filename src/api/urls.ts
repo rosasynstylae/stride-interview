@@ -1,7 +1,8 @@
 const PATIENT_URLS = {
   FETCH_LIST: "patients/",
   CREATE: "patients/",
-  DETAILS: (id: string) => `patients/${encodeURIComponent(id)}`,
+  DETAILS: (id: string | number) => `patients/${encodeURIComponent(id)}`,
+  UPDATE: (id: string | number) => `patients/${encodeURIComponent(id)}`,
   APPOINTMENTS: (id: string) =>
     `patients/${encodeURIComponent(id)}/appointments`,
 } as const;

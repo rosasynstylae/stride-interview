@@ -2,19 +2,17 @@ import type { TPatient } from "@/utils/types/patient";
 import { formatBirthDate, formatDate } from "@/utils/formatDate";
 import { DataList } from "@chakra-ui/react/data-list";
 import { Flex } from "@chakra-ui/react/flex";
-import { Heading } from "@chakra-ui/react/heading";
 import { Link } from "@chakra-ui/react/link";
 
 interface TPatientInfoProps {
   patient: TPatient;
+  header?: React.ReactNode;
 }
 
-function PatientInfo({ patient }: TPatientInfoProps) {
+function PatientInfo({ patient, header }: TPatientInfoProps) {
   return (
     <Flex direction="column" gap={4} w="full">
-      <Heading as="h1" size="2xl">
-        {patient.firstName} {patient.lastName}
-      </Heading>
+      {header}
       <DataList.Root orientation="horizontal">
         <DataList.Item>
           <DataList.ItemLabel>Date of birth</DataList.ItemLabel>
