@@ -11,11 +11,12 @@ import { AppointmentNoteDialogContent } from "./AppointmentNoteDialogContent";
 interface TAppointmentNoteEditFormProps {
   patientId: string;
   note: TAppointmentNotes;
+  title: string;
   onClose: () => void;
 }
 
 /** Mounted only while the dialog is open, so it always starts from the latest note */
-function AppointmentNoteEditForm({ patientId, note, onClose }: TAppointmentNoteEditFormProps) {
+function AppointmentNoteEditForm({ patientId, note, title, onClose }: TAppointmentNoteEditFormProps) {
   const { mutateAsync } = useUpdateAppointmentNotes();
 
   const { submitForm, ...form } = useAppointmentNotesForm({
@@ -39,7 +40,9 @@ function AppointmentNoteEditForm({ patientId, note, onClose }: TAppointmentNoteE
     },
   });
 
-  return <AppointmentNoteDialogContent title="Edit note" form={form} submitForm={submitForm} />;
+  return (
+    <AppointmentNoteDialogContent title={`Edit ${title}`} form={form} submitForm={submitForm} />
+  );
 }
 
 interface TAppointmentNoteEditDialogProps {
@@ -62,7 +65,7 @@ function AppointmentNoteEditDialog({ patientId, note, title }: TAppointmentNoteE
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          <AppointmentNoteEditForm patientId={patientId} note={note} onClose={onClose} />
+          <AppointmentNoteEditForm patientId={patientId} note={note} title={title} onClose={onClose} />
         </Dialog.Positioner>
       </Portal>
     </Dialog.Root>

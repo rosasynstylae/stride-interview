@@ -103,10 +103,10 @@ describe("PatientDetailsPage", () => {
 
     // The date cell is the drawer trigger; no details are fetched until it's opened
     expect(
-      within(firstRow).getByRole("button", { name: "View appointment on Feb 14, 2025" }),
+      within(firstRow).getByRole("button", { name: /^View appointment on Feb 14, 2025 at / }),
     ).toBeInTheDocument();
     expect(
-      within(secondRow).getByRole("button", { name: "View appointment on Mar 1, 2025" }),
+      within(secondRow).getByRole("button", { name: /^View appointment on Mar 1, 2025 at / }),
     ).toBeInTheDocument();
   });
 

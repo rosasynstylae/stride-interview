@@ -4,7 +4,7 @@ import { Icon } from "@chakra-ui/react/icon";
 import { Portal } from "@chakra-ui/react/portal";
 import { VisuallyHidden } from "@chakra-ui/react/visually-hidden";
 import { LuEye } from "react-icons/lu";
-import { formatDate } from "@/utils/formatDate";
+import { formatDate, formatTime } from "@/utils/formatDate";
 import type { TAppointment } from "@/utils/types/appointment";
 import { useOpen } from "@/utils/useOpen";
 import { AppointmentDetailsContainer } from "./AppointmentDetailsContainer";
@@ -15,7 +15,10 @@ interface TAppointmentDetailsDrawerProps {
 }
 
 /** The appointments table's date cell: opens the appointment's details and notes */
-function AppointmentDetailsDrawer({ patientId, appointment }: TAppointmentDetailsDrawerProps) {
+function AppointmentDetailsDrawer({
+  patientId,
+  appointment,
+}: TAppointmentDetailsDrawerProps) {
   const { open, setOpen } = useOpen();
   const date = formatDate(appointment.startTime);
 
@@ -35,6 +38,11 @@ function AppointmentDetailsDrawer({ patientId, appointment }: TAppointmentDetail
           </Icon>
           <VisuallyHidden>View appointment on </VisuallyHidden>
           <time dateTime={appointment.startTime}>{date}</time>
+          <VisuallyHidden>
+            {" "}
+            at {formatTime(appointment.startTime)} to{" "}
+            {formatTime(appointment.endTime)}
+          </VisuallyHidden>
         </Button>
       </Drawer.Trigger>
       <Portal>
@@ -45,7 +53,10 @@ function AppointmentDetailsDrawer({ patientId, appointment }: TAppointmentDetail
               <Drawer.Title>Appointment · {date}</Drawer.Title>
             </Drawer.Header>
             <Drawer.Body>
-              <AppointmentDetailsContainer patientId={patientId} appointmentId={appointment.id} />
+              <AppointmentDetailsContainer
+                patientId={patientId}
+                appointmentId={appointment.id}
+              />
             </Drawer.Body>
             <Drawer.CloseTrigger asChild>
               <CloseButton size="sm" />

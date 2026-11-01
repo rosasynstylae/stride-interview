@@ -76,25 +76,41 @@ type TUser = Awaited<ReturnType<typeof renderDrawer>>["user"];
  * for a moment Chakra is still moving focus in and updating which layers are
  * hidden; typing before then can fail to focus the field (seen under full-suite load).
  */
-async function findReadyDialog(name: string) {
+async function findReadyDialog(name: string | RegExp) {
   const dialog = await screen.findByRole("dialog", { name });
   await waitFor(() => expect(dialog.contains(document.activeElement)).toBe(true));
   return dialog;
 }
 
 async function openDrawer(user: TUser) {
-  await user.click(screen.getByRole("button", { name: "View appointment on Feb 14, 2025" }));
+  await user.click(screen.getByRole("button", { name: /^View appointment on Feb 14, 2025 at / }));
   return screen.findByRole("dialog", { name: "Appointment · Feb 14, 2025" });
 }
 
 describe("AppointmentDetailsDrawer", () => {
+  it("gives same-day appointments distinct button names", async () => {
+    const later = { ...APPOINTMENT, id: "2", startTime: "2025-02-14T19:00:00.000Z" };
+    renderWithProviders(
+      <>
+        <AppointmentDetailsDrawer patientId="1" appointment={APPOINTMENT} />
+        <AppointmentDetailsDrawer patientId="1" appointment={later} />
+      </>,
+    );
+
+    const names = screen
+      .getAllByRole("button", { name: /^View appointment on Feb 14, 2025 at / })
+      .map((b) => b.textContent);
+    expect(names).toHaveLength(2);
+    expect(new Set(names).size).toBe(2);
+  });
+
   it("fetches nothing until the date is clicked", async () => {
     const fetchSpy = jest.spyOn(globalThis, "fetch");
     try {
       await renderDrawer();
 
       expect(
-        screen.getByRole("button", { name: "View appointment on Feb 14, 2025" }),
+        screen.getByRole("button", { name: /^View appointment on Feb 14, 2025 at / }),
       ).toBeInTheDocument();
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
       // lazyMount: the drawer's queries don't exist until it opens
@@ -165,7 +181,7 @@ describe("AppointmentDetailsDrawer", () => {
 
     const drawer = await openDrawer(user);
     await user.click(await within(drawer).findByRole("button", { name: "Edit Note 2 · Feb 20, 2025" }));
-    const dialog = await findReadyDialog("Edit note");
+    const dialog = await findReadyDialog("Edit Note 2 · Feb 20, 2025");
     expect(within(dialog).getByRole("textbox", { name: /chief complaint/i })).toHaveValue("Sore heel");
 
     const progress = within(dialog).getByRole("textbox", { name: /progress/i });
@@ -174,7 +190,7 @@ describe("AppointmentDetailsDrawer", () => {
     await user.click(within(dialog).getByRole("button", { name: "Save" }));
 
     expect(await screen.findByText("Note saved")).toBeInTheDocument();
-    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Edit note" })).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Edit Note 2 · Feb 20, 2025" })).not.toBeInTheDocument());
     expect(body).toEqual({
       chiefComplaint: "Sore heel",
       treatmentPlan: "Toe exercises",
