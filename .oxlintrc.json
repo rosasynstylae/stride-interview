@@ -30,6 +30,13 @@
         "react/only-export-components": "off",
         "typescript/no-unsafe-type-assertion": "off"
       }
+    },
+    {
+      "files": ["src/test/**", "src/**/*.test.ts", "src/**/*.test.tsx"],
+      "env": { "jest": true },
+      "rules": {
+        "react/only-export-components": "off"
+      }
     }
   ]
 }

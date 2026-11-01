@@ -11,17 +11,6 @@ npm i
 npm run dev
 ```
 
-# Nice to Haves
-- Testing
-- Appointment Edit
-- Patient Edit
-- Patient list filtering (frontend only, obvs)
-- Patient details header/title use the patient name (would use context, probably)
-- check appointment over booking for a patient (providers may have multiple people at the same time)
-- appointment create page: swap patient dropdown to a searchable select
-- pre-commit linting/tsc
-- consistent router urls (to make it DRYer)
-
 # Choices
 ## Oxlint over ESLint
 ESLint typescript doesn't support the newest version of typescript
@@ -41,6 +30,18 @@ Used this to easily handle fetching states and reduced-fetching on queries that 
 
 ## react-hook-form
 quick way to get all of the validation/dirty state needed. zod because well used, small, and easy
+
+# Nice to Haves
+- Appointment Edit
+- Patient Edit
+- Patient list filtering (frontend only, obvs)
+- Patient details header/title use the patient name
+- check appointment over booking for a patient (providers may have multiple people at the same time, but patients can't have multiple providers at the same time)
+- appointment create page: swap patient dropdown to a searchable select
+- pre-commit linting/tsc
+- consistent router urls (to make it DRYer)
+- save provider details in a global context, rather than re-fetching so much
+
 
 # Next Steps
 ## Auth
