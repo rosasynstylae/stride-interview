@@ -19,8 +19,8 @@ function QuickLinks() {
           <Card.Description>See the list of patients</Card.Description>
         </QuickLinkCard>
         <QuickLinkCard link="/appointments">
-          <Card.Title mb="2">Appointment List</Card.Title>
-          <Card.Description>See the list of appointments</Card.Description>
+          <Card.Title mb="2">New Appointment</Card.Title>
+          <Card.Description>Schedule an appointment for a patient</Card.Description>
         </QuickLinkCard>
       </Flex>
     </Flex>

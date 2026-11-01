@@ -7,4 +7,8 @@ interface TAppointmentFormValues {
   providerId: string;
 }
 
-export type { TAppointmentFormValues };
+interface TAppointmentFormPatientValues extends TAppointmentFormValues {
+  patientId: string;
+}
+
+export type { TAppointmentFormValues, TAppointmentFormPatientValues };

@@ -12,25 +12,6 @@ npm run dev
 ```
 
 # TODO
-## Appointment Set Up
-- Create appointment
-  - patient id
-  - date
-  - start time
-  - end time
-  - type
-  - status
-  - provider id
-
-## Patient Details
-- Create appointment
-  - date
-  - start time
-  - end time
-  - type
-  - status
-  - provider id
-
 ## Appointment Details
 - Appointment View
   - Clinical Notes List
@@ -48,10 +29,10 @@ npm run dev
 - Appointment Edit
 - Patient Edit
 - Testing
-- Patient list filtering
+- Patient list filtering (frontend only, obvs)
 - Patient details header/title use the patient name (would use context, probably)
-- full appointments list, regardless of patient
-- check appointment double booking
+- check appointment over booking for a patient (providers may have multiple people at the same time)
+- appointment create page: swap patient dropdown to a searchable select
 
 # Choices
 ## Oxlint over ESLint
@@ -79,3 +60,11 @@ If there was auth on the backend, would worry about that
 
 ## Build Size
 Build size is a little big; I would sit down and do some work to make it smaller
+
+## Full Appointments Page
+Would be nice to have a calendar view with all the appointments regardless of patient.
+Would have the ability to filter by patient
+Would have the ability to filter by provider
+Would have the ability to create a new appointment
+Would have the ability to edit a new appointment
+Nice to Have: some sort of "fullness" indicator for a page

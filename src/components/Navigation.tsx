@@ -31,7 +31,7 @@ function Navigation() {
                 <li>
                   <Drawer.ActionTrigger asChild>
                     <Button asChild w="full">
-                      <NavLink to="/appointments">Appointment List</NavLink>
+                      <NavLink to="/appointments">New Appointment</NavLink>
                     </Button>
                   </Drawer.ActionTrigger>
                 </li>

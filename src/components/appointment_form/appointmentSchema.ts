@@ -1,7 +1,4 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   APPOINTMENT_STATUS,
   APPOINTMENT_TYPE,
@@ -45,44 +42,5 @@ const DEFAULT_VALUES: TAppointmentFormValues = {
   providerId: "",
 };
 
-interface TAppointmentFormParams {
-  onSubmit: (vals: TAppointmentFormOutput) => void | Promise<void>;
-  defaultValues?: TAppointmentFormValues;
-}
-
-const useAppointmentForm = ({
-  onSubmit,
-  defaultValues = DEFAULT_VALUES,
-}: TAppointmentFormParams) => {
-  const { handleSubmit, ...info } = useForm<
-    TAppointmentFormValues,
-    unknown,
-    TAppointmentFormOutput
-  >({
-    defaultValues,
-    resolver: zodResolver(appointmentSchema),
-    // Validate a field once it's been left, then on every change after that
-    mode: "onTouched",
-  });
-
-  const { watch, trigger, getFieldState } = info;
-
-  // Only the changed field is re-validated, so moving the start time wouldn't
-  // update the end time's error. Re-check it, once the user has been there.
-  useEffect(() => {
-    const subscription = watch((_values, { name }) => {
-      if (name === "startTime" && getFieldState("endTime").isTouched) {
-        void trigger("endTime");
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, trigger, getFieldState]);
-
-  return {
-    submitForm: handleSubmit(onSubmit),
-    ...info,
-  };
-};
-
 export type { TAppointmentFormOutput };
-export { useAppointmentForm };
+export { appointmentSchema, DEFAULT_VALUES as APPOINTMENT_FORM_DEFAULT_VALUES };

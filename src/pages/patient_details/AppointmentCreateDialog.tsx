@@ -6,22 +6,15 @@ import { AppointmentForm } from "@/components/appointment_form/AppointmentForm";
 import { useAppointmentForm } from "@/components/appointment_form/useAppointmentForm";
 import type { TProvider } from "@/utils/types/provider";
 import { useOpen } from "@/utils/useOpen";
-import type { TSelectOption } from "@/components/ui/SelectField";
+import { toISODateTime } from "@/utils/toISODateTime";
+import { toProviderOption } from "@/utils/selectOptions";
 import { useMemo } from "react";
+import { FormProvider } from "react-hook-form";
 
 interface TAppointmentCreateDialogProps {
   patientId: string;
   providers: TProvider[];
 }
-
-// The form's date + "HH:mm" are the user's local time; the API stores UTC instants
-const toISODateTime = (date: string, time: string): string =>
-  new Date(`${date}T${time}`).toISOString();
-
-const toProviderOption = (p: TProvider): TSelectOption => ({
-  label: `${p.firstName} ${p.lastName}`,
-  value: p.id,
-});
 
 function AppointmentCreateDialog({
   patientId,
@@ -30,7 +23,7 @@ function AppointmentCreateDialog({
   const { open, setOpen, onClose } = useOpen();
   const { mutateAsync } = useCreatePatientAppointment();
 
-  const { submitForm, control, reset, formState } = useAppointmentForm({
+  const { submitForm, ...form } = useAppointmentForm({
     onSubmit: async ({ date, startTime, endTime, ...rest }) => {
       try {
         await mutateAsync({
@@ -46,7 +39,10 @@ function AppointmentCreateDialog({
     },
   });
 
-  const { isValid, isDirty, isSubmitting } = formState;
+  const {
+    reset,
+    formState: { isValid, isDirty, isSubmitting },
+  } = form;
 
   const providerOptions = useMemo(
     () => providers.map(toProviderOption),
@@ -66,34 +62,33 @@ function AppointmentCreateDialog({
         <Dialog.Backdrop />
         <Dialog.Positioner>
           {/* Content renders as the <form> so Body/Footer keep the dialog's layout */}
-          <Dialog.Content asChild>
-            <form onSubmit={(e) => void submitForm(e)} noValidate>
-              <Dialog.Header>
-                <Dialog.Title>Add appointment</Dialog.Title>
-              </Dialog.Header>
-              <Dialog.Body>
-                <AppointmentForm
-                  control={control}
-                  providers={providerOptions}
-                />
-              </Dialog.Body>
-              <Dialog.Footer>
-                <Dialog.ActionTrigger asChild>
-                  <Button variant="outline">Cancel</Button>
-                </Dialog.ActionTrigger>
-                <Button
-                  type="submit"
-                  disabled={!isValid || !isDirty}
-                  loading={isSubmitting}
-                >
-                  Save
-                </Button>
-              </Dialog.Footer>
-              <Dialog.CloseTrigger asChild>
-                <CloseButton size="sm" />
-              </Dialog.CloseTrigger>
-            </form>
-          </Dialog.Content>
+          <FormProvider {...form}>
+            <Dialog.Content asChild>
+              <form onSubmit={(e) => void submitForm(e)} noValidate>
+                <Dialog.Header>
+                  <Dialog.Title>Add appointment</Dialog.Title>
+                </Dialog.Header>
+                <Dialog.Body>
+                  <AppointmentForm providers={providerOptions} />
+                </Dialog.Body>
+                <Dialog.Footer>
+                  <Dialog.ActionTrigger asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </Dialog.ActionTrigger>
+                  <Button
+                    type="submit"
+                    disabled={!isValid || !isDirty}
+                    loading={isSubmitting}
+                  >
+                    Save
+                  </Button>
+                </Dialog.Footer>
+                <Dialog.CloseTrigger asChild>
+                  <CloseButton size="sm" />
+                </Dialog.CloseTrigger>
+              </form>
+            </Dialog.Content>
+          </FormProvider>
         </Dialog.Positioner>
       </Portal>
     </Dialog.Root>
