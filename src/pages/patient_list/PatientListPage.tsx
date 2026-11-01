@@ -11,7 +11,9 @@ function PatientListPage() {
       title={getPageTitle("Patients")}
       headerBar={<PatientListHeaderBar />}
     >
-      <Flex direction="column" w="full">
+      {/* minW={0}: as a child of <main>'s flex row this would otherwise refuse to
+          shrink below the table's width, so the page would widen instead of the table scrolling */}
+      <Flex direction="column" w="full" minW={0}>
         <Flex alignSelf="end">
           <PatientCreateDialog />
         </Flex>

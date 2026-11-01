@@ -40,7 +40,9 @@ function PatientDetailsContainer({ id }: TPatientDetailsContainerProps) {
   }
 
   return (
-    <Flex direction="column" gap={8} w="full">
+    // minW={0}: as a child of <main>'s flex row this would otherwise refuse to
+    // shrink below the table's width, so the page would widen instead of the table scrolling
+    <Flex direction="column" gap={8} w="full" minW={0}>
       <PatientInfo patient={patient.data} />
       <AppointmentsListContainer
         patientId={id}

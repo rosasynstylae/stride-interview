@@ -12,23 +12,14 @@ npm run dev
 ```
 
 # TODO
-## Appointment Details
-- Appointment View
-  - Clinical Notes List
-    - chief complaint
-    - treatment plan
-    - progress notes
-    - edit
-  - Create Clinical Notes
-
 ## Misc
 - nav link "current" styling
 - error boundary
 
 # Nice to Haves
+- Testing
 - Appointment Edit
 - Patient Edit
-- Testing
 - Patient list filtering (frontend only, obvs)
 - Patient details header/title use the patient name (would use context, probably)
 - check appointment over booking for a patient (providers may have multiple people at the same time)
@@ -58,8 +49,9 @@ quick way to get all of the validation/dirty state needed. zod because well used
 ## Auth
 If there was auth on the backend, would worry about that
 
-## Build Size
-Build size is a little big; I would sit down and do some work to make it smaller
+## Feature Flags
+Long term, it would be good to have ways to hide items in dev,
+not to mention allow for higher tiers of access
 
 ## Full Appointments Page
 Would be nice to have a calendar view with all the appointments regardless of patient.

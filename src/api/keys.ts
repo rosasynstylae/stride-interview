@@ -22,6 +22,27 @@ const FETCH_PROVIDER_LIST_KEY: readonly string[] = [
   PROVIDER_URLS.FETCH_LIST,
 ] as const;
 
+// Nested under the patient's appointments key so invalidating that also refreshes notes
+const fetchAppointmentNotesListKey = (
+  patientId: string,
+  appointmentId: string,
+): readonly string[] =>
+  [...fetchPatientAppointmentsKey(patientId), appointmentId, "notes"] as const;
+
+const CREATE_APPOINTMENT_NOTES_KEY: readonly string[] = [
+  ...FETCH_PATIENT_LIST_KEY,
+  "appointments",
+  "notes",
+  "create",
+] as const;
+
+const UPDATE_APPOINTMENT_NOTES_KEY: readonly string[] = [
+  ...FETCH_PATIENT_LIST_KEY,
+  "appointments",
+  "notes",
+  "update",
+] as const;
+
 export {
   FETCH_PATIENT_LIST_KEY,
   CREATE_PATIENT_KEY,
@@ -29,4 +50,7 @@ export {
   fetchPatientAppointmentsKey,
   CREATE_PATIENT_APPOINTMENT_KEY,
   FETCH_PROVIDER_LIST_KEY,
+  fetchAppointmentNotesListKey,
+  CREATE_APPOINTMENT_NOTES_KEY,
+  UPDATE_APPOINTMENT_NOTES_KEY,
 };
