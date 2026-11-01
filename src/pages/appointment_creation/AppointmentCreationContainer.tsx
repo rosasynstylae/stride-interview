@@ -9,10 +9,13 @@ function AppointmentCreationContainer() {
   const providers = useFetchProviderList();
   const patients = useFetchPatientList();
 
-  if (providers.isPending || patients.isPending) return <LoadingSpinner />;
+  if (providers.isPending || patients.isPending) {
+    return <LoadingSpinner label="Loading patient information" />;
+  }
 
   if (providers.isError || patients.isError) {
-    return <ErrorAlert />;
+    // The page already has its "New appointment" h1
+    return <ErrorAlert headingLevel={2} />;
   }
 
   return (

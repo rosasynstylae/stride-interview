@@ -1,3 +1,4 @@
+import { chakra } from "@chakra-ui/react/styled-system";
 import { Button, CloseButton } from "@chakra-ui/react/button";
 import { Dialog } from "@chakra-ui/react/dialog";
 import { Portal } from "@chakra-ui/react/portal";
@@ -41,7 +42,7 @@ function AppointmentCreateDialog({
 
   const {
     reset,
-    formState: { isValid, isDirty, isSubmitting },
+    formState: { isSubmitting },
   } = form;
 
   const providerOptions = useMemo(
@@ -61,10 +62,15 @@ function AppointmentCreateDialog({
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          {/* Content renders as the <form> so Body/Footer keep the dialog's layout */}
+          {/* The form sits inside the dialog (role="dialog" isn't allowed on <form>);
+              display: contents keeps Body/Footer laid out as the dialog's own children */}
           <FormProvider {...form}>
-            <Dialog.Content asChild>
-              <form onSubmit={(e) => void submitForm(e)} noValidate>
+            <Dialog.Content>
+              <chakra.form
+                display="contents"
+                onSubmit={(e) => void submitForm(e)}
+                noValidate
+              >
                 <Dialog.Header>
                   <Dialog.Title>Add appointment</Dialog.Title>
                 </Dialog.Header>
@@ -77,7 +83,6 @@ function AppointmentCreateDialog({
                   </Dialog.ActionTrigger>
                   <Button
                     type="submit"
-                    disabled={!isValid || !isDirty}
                     loading={isSubmitting}
                   >
                     Save
@@ -86,7 +91,7 @@ function AppointmentCreateDialog({
                 <Dialog.CloseTrigger asChild>
                   <CloseButton size="sm" />
                 </Dialog.CloseTrigger>
-              </form>
+              </chakra.form>
             </Dialog.Content>
           </FormProvider>
         </Dialog.Positioner>

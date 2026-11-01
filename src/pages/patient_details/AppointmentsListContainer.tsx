@@ -23,7 +23,7 @@ function AppointmentsListContainer({
   isPending,
 }: TAppointmentsListContainerProps) {
   if (isPending) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner label="Loading appointment information" />;
   }
 
   if (isError) {
@@ -44,7 +44,10 @@ function AppointmentsListContainer({
         <AppointmentCreateDialog patientId={patientId} providers={providers} />
       }
       renderRowAction={(appointment) => (
-        <AppointmentNotesDialog patientId={patientId} appointment={appointment} />
+        <AppointmentNotesDialog
+          patientId={patientId}
+          appointment={appointment}
+        />
       )}
     />
   );

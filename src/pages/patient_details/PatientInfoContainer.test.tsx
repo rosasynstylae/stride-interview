@@ -43,6 +43,18 @@ describe("PatientInfoContainer", () => {
     expect(screen.getByRole("textbox", { name: /date of birth/i })).toHaveValue("02/25/2003");
   });
 
+  it("moves focus into the form, and back to the Edit button on cancel", async () => {
+    const { user } = renderContainer();
+
+    await user.click(editButton());
+    // The Edit button is gone; focus shouldn't fall back to <body>
+    expect(firstName()).toHaveFocus();
+    expect(screen.getByRole("form", { name: "Edit patient details" })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(editButton()).toHaveFocus();
+  });
+
   it("discards edits on cancel", async () => {
     const { user } = renderContainer();
 
@@ -59,17 +71,22 @@ describe("PatientInfoContainer", () => {
     expect(firstName()).toHaveValue("Eli");
   });
 
-  it("disables saving while the form is invalid", async () => {
+  it("keeps Save available, and on an invalid submit shows the error and focuses the field", async () => {
     const { user } = renderContainer();
 
     await user.click(editButton());
-    await waitFor(() => expect(save()).toBeEnabled());
-
     await user.clear(firstName());
-    await user.tab();
+    // Move focus away so we can check it's sent back to the invalid field
+    await user.click(screen.getByRole("textbox", { name: /last name/i }));
 
-    await waitFor(() => expect(save()).toBeDisabled());
-    expect(screen.getByText("First name is required")).toBeInTheDocument();
+    // Never disabled: disabled buttons are skipped by Tab and don't explain why
+    expect(save()).toBeEnabled();
+    await user.click(save());
+
+    expect(await screen.findByText("First name is required")).toBeInTheDocument();
+    await waitFor(() => expect(firstName()).toHaveFocus());
+    // No PUT is mocked, so a request would have failed and shown the error toast
+    expect(screen.queryByText("Couldn't save the patient")).not.toBeInTheDocument();
   });
 
   it("saves the changes with a PUT and returns to the details view", async () => {
@@ -85,7 +102,6 @@ describe("PatientInfoContainer", () => {
     await user.click(editButton());
     await user.clear(firstName());
     await user.type(firstName(), "Elias");
-    await waitFor(() => expect(save()).toBeEnabled());
     await user.click(save());
 
     await waitFor(() => expect(screen.queryByRole("textbox")).not.toBeInTheDocument());
@@ -103,7 +119,6 @@ describe("PatientInfoContainer", () => {
     const { user } = renderContainer();
 
     await user.click(editButton());
-    await waitFor(() => expect(save()).toBeEnabled());
     await user.click(save());
 
     expect(await screen.findByText("Couldn't save the patient")).toBeInTheDocument();

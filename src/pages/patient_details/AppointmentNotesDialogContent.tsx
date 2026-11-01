@@ -1,3 +1,4 @@
+import { chakra } from "@chakra-ui/react/styled-system";
 import { Button, CloseButton } from "@chakra-ui/react/button";
 import { Dialog } from "@chakra-ui/react/dialog";
 import { FormProvider, type UseFormReturn } from "react-hook-form";
@@ -21,13 +22,16 @@ function AppointmentNotesDialogContent({
   form,
   submitForm,
 }: TAppointmentNotesDialogContentProps) {
-  const { isValid, isDirty, isSubmitting } = form.formState;
+  const { isSubmitting } = form.formState;
 
   return (
     <FormProvider {...form}>
-      {/* Content renders as the <form> so Body/Footer keep the dialog's layout */}
-      <Dialog.Content asChild>
-        <form onSubmit={(e) => void submitForm(e)} noValidate>
+      <Dialog.Content>
+        <chakra.form
+          display="contents"
+          onSubmit={(e) => void submitForm(e)}
+          noValidate
+        >
           <Dialog.Header>
             <Dialog.Title>{title}</Dialog.Title>
           </Dialog.Header>
@@ -40,7 +44,6 @@ function AppointmentNotesDialogContent({
             </Dialog.ActionTrigger>
             <Button
               type="submit"
-              disabled={!isValid || !isDirty}
               loading={isSubmitting}
             >
               Save
@@ -49,7 +52,7 @@ function AppointmentNotesDialogContent({
           <Dialog.CloseTrigger asChild>
             <CloseButton size="sm" />
           </Dialog.CloseTrigger>
-        </form>
+        </chakra.form>
       </Dialog.Content>
     </FormProvider>
   );

@@ -31,7 +31,9 @@ function PatientDetailsContainer({ id }: TPatientDetailsContainerProps) {
   const appointments = useFetchPatientAppointmentList(id);
   const providers = useFetchProviderList();
 
-  if (patient.isPending) return <LoadingSpinner />;
+  if (patient.isPending) {
+    return <LoadingSpinner label="Loading patient information" />;
+  }
 
   if (patient.isError) {
     if (patient.error instanceof APIError && patient.error.status === 404) {

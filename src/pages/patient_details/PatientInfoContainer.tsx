@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { PatientForm } from "@/components/patient_form/PatientForm";
 import { usePatientForm } from "@/components/patient_form/usePatientForm";
 import { toPatientFormValues } from "@/components/patient_form/toPatientFormValues";
@@ -22,7 +23,7 @@ function PatientFormContainer({
   onCancel,
 }: TPatientFormContainerProps) {
   const { mutateAsync } = useUpdatePatient();
-  const { submitForm, control, reset, formState } = usePatientForm({
+  const { submitForm, control, reset, formState, setFocus } = usePatientForm({
     defaultValues: toPatientFormValues(patient),
     onSubmit: async (vals) => {
       try {
@@ -34,12 +35,17 @@ function PatientFormContainer({
     },
   });
 
+  // The Edit button that opened this is gone, so move focus into the form
+  useEffect(() => {
+    setFocus("firstName");
+  }, [setFocus]);
+
   const cancel = () => {
     onCancel();
     reset();
   };
 
-  const { isValid, isSubmitting } = formState;
+  const { isSubmitting } = formState;
 
   return (
     <Flex direction="column" gap={3}>
@@ -50,13 +56,17 @@ function PatientFormContainer({
         asChild
         w={{ base: "full", md: "1/2", lg: "1/3" }}
       >
-        <form onSubmit={(e) => void submitForm(e)} noValidate>
+        <form
+          aria-label="Edit patient details"
+          onSubmit={(e) => void submitForm(e)}
+          noValidate
+        >
           <PatientForm control={control} />
           <Flex gap={3} justifyContent="flex-end">
             <Button onClick={cancel} variant="outline">
               Cancel
             </Button>
-            <Button type="submit" disabled={!isValid} loading={isSubmitting}>
+            <Button type="submit" loading={isSubmitting}>
               Save
             </Button>
           </Flex>
@@ -72,13 +82,28 @@ interface TPatientInfoContainerProps {
 
 function PatientInfoContainer({ patient }: TPatientInfoContainerProps) {
   const { open, onClose, onOpen } = useOpen();
+  const editButtonRef = useRef<HTMLButtonElement>(null);
+  const returnFocus = useRef(false);
+
+  // Leaving the form unmounts it; send focus back to the Edit button instead of <body>
+  const closeForm = () => {
+    returnFocus.current = true;
+    onClose();
+  };
+
+  useEffect(() => {
+    if (!open && returnFocus.current) {
+      returnFocus.current = false;
+      editButtonRef.current?.focus();
+    }
+  }, [open]);
 
   if (open) {
     return (
       <PatientFormContainer
         patient={patient}
-        onCancel={onClose}
-        onSuccess={onClose}
+        onCancel={closeForm}
+        onSuccess={closeForm}
       />
     );
   }
@@ -91,6 +116,7 @@ function PatientInfoContainer({ patient }: TPatientInfoContainerProps) {
           patient={patient}
           headerAction={
             <IconButton
+              ref={editButtonRef}
               onClick={onOpen}
               aria-label="Edit Patient"
               variant="ghost"

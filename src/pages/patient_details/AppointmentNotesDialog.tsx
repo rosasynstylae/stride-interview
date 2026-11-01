@@ -1,7 +1,7 @@
 import { IconButton } from "@chakra-ui/react/button";
 import { Dialog } from "@chakra-ui/react/dialog";
 import { Portal } from "@chakra-ui/react/portal";
-import { Spinner } from "@chakra-ui/react/spinner";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Text } from "@chakra-ui/react/text";
 import { useFetchAppointmentNotesList } from "@/api/appointment_notes/fetchAppointmentNotesList";
 import { formatDate } from "@/utils/formatDate";
@@ -26,7 +26,7 @@ function AppointmentNotesDialog({
     appointment.id,
   );
 
-  if (isPending) return <Spinner size="sm" aria-label="Loading notes" />;
+  if (isPending) return <LoadingSpinner size="sm" label="Loading notes" />;
 
   if (isError) {
     return (

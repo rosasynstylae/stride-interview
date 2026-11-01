@@ -1,3 +1,4 @@
+import { chakra } from "@chakra-ui/react/styled-system";
 import { Dialog } from "@chakra-ui/react/dialog";
 import { Button, CloseButton } from "@chakra-ui/react/button";
 import { Portal } from "@chakra-ui/react/portal";
@@ -21,7 +22,7 @@ function PatientCreateDialog() {
     },
   });
 
-  const { isValid, isDirty, isSubmitting } = formState;
+  const { isSubmitting } = formState;
 
   return (
     <Dialog.Root
@@ -35,9 +36,12 @@ function PatientCreateDialog() {
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          {/* Content renders as the <form> so Body/Footer keep the dialog's layout */}
-          <Dialog.Content asChild>
-            <form onSubmit={(e) => void submitForm(e)} noValidate>
+          <Dialog.Content>
+            <chakra.form
+              display="contents"
+              onSubmit={(e) => void submitForm(e)}
+              noValidate
+            >
               <Dialog.Header>
                 <Dialog.Title>Add patient</Dialog.Title>
               </Dialog.Header>
@@ -50,7 +54,6 @@ function PatientCreateDialog() {
                 </Dialog.ActionTrigger>
                 <Button
                   type="submit"
-                  disabled={!isValid || !isDirty}
                   loading={isSubmitting}
                 >
                   Save
@@ -59,7 +62,7 @@ function PatientCreateDialog() {
               <Dialog.CloseTrigger asChild>
                 <CloseButton size="sm" />
               </Dialog.CloseTrigger>
-            </form>
+            </chakra.form>
           </Dialog.Content>
         </Dialog.Positioner>
       </Portal>

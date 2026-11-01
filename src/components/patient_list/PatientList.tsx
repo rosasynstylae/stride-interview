@@ -36,7 +36,7 @@ function PatientList({ patients }: TPatientListProps) {
                 <Table.Cell>
                   <LinkStyled asChild w="full" h="full">
                     <Link to={`/patients/${p.id}`}>
-                      <IconButton as="span" type={undefined} variant="ghost">
+                      <IconButton as="span" type={undefined} variant="ghost" aria-hidden="true">
                         <LuEye />
                       </IconButton>
                       {p.firstName} {p.lastName}

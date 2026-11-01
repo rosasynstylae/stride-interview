@@ -40,7 +40,7 @@ function AppointmentCreateFormContainer({
   });
 
   const {
-    formState: { isValid, isDirty, isSubmitting },
+    formState: { isSubmitting },
   } = form;
 
   const patientOptions = useMemo(
@@ -63,7 +63,6 @@ function AppointmentCreateFormContainer({
           <Button
             type="submit"
             alignSelf="flex-start"
-            disabled={!isValid || !isDirty}
             loading={isSubmitting}
           >
             Create appointment
