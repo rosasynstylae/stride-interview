@@ -11,6 +11,10 @@ npm i
 npm run dev
 ```
 
+## "Prod"
+You can see a "Prod" version at:
+https://stride-interview.vercel.app/
+
 # Choices
 ## Oxlint over ESLint
 ESLint typescript doesn't support the newest version of typescript
