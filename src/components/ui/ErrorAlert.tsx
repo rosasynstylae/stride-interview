@@ -3,7 +3,7 @@ import { Flex } from "@chakra-ui/react/flex";
 import { Heading } from "@chakra-ui/react/heading";
 import { Text } from "@chakra-ui/react/text";
 import { Link } from "@chakra-ui/react/link";
-import { LuZapOff } from "react-icons/lu";
+import { BsBandaid } from "react-icons/bs";
 
 interface TErrorAlertProps {
   /**
@@ -23,7 +23,7 @@ function ErrorAlert({ headingLevel = 1 }: TErrorAlertProps) {
       gap={2}
     >
       <Icon size="2xl" aria-hidden>
-        <LuZapOff />
+        <BsBandaid />
       </Icon>
       <Heading as={`h${headingLevel}`} size="2xl">
         Oh no! You've run into an error!
