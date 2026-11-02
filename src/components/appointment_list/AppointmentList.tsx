@@ -14,6 +14,12 @@ interface TAppointmentListProps {
   appointments: TAppointment[];
   providers: TProvider[];
   headerAction?: React.ReactNode;
+  // would be better, long-term, to extract the table row
+  // with a prop that can pass in the date cell.
+  // Then have the table wrapper take in "children" that is a list of the rows
+  // *then* put that all together in a container.
+  // That's easier to test and handles components more naturally.
+  // This was faster.
   /** Replaces the plain date in the Date column (e.g. with a control that opens details) */
   renderDateCell?: (appointment: TAppointment) => React.ReactNode;
 }

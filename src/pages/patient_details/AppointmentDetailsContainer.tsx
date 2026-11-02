@@ -72,6 +72,8 @@ function AppointmentDetailsContainer({
   const notesHeadingId = useId();
 
   // All queries start immediately and run in parallel
+  // might consider passing in the appointment information using context
+  // since it's already fetched on the page.
   const appointment = useFetchPatientAppointment(patientId, appointmentId);
   const notes = useFetchAppointmentNotesList(patientId, appointmentId);
   const providers = useFetchProviderList();
