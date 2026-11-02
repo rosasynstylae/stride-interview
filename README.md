@@ -147,7 +147,7 @@ I used react-router to split the system to several pages:
 - AppointmentDetailsDrawer handles open/close state for itself
 - AppointmentDetailsDrawer renders AppointmentDetailsContainer
 - AppointmentDetailsContainer fetches the appointment information, appointment notes, and provider list
-  - might consider using context for the appointment information, as it was already grabbed earlier on the page
+  - might consider using context for the appointment information long-term, as it was already grabbed earlier on the page
 - AppointmentDetailsContainer renders a loading spinner, error page, or the AppointmentInfoContainer, AppointmentNoteCreateDialog, and the NotesList
 - AppointmentInfoContainer handles the open/close state for the edit form
 - AppointmentInfoContainer renders either the AppointmentEditContainer or read-only AppointmentInformation and a button to allow for editting

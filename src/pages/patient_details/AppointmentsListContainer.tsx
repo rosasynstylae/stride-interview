@@ -6,6 +6,43 @@ import type { TProvider } from "@/utils/types/provider";
 import { Text } from "@chakra-ui/react/text";
 import { AppointmentCreateDialog } from "./AppointmentCreateDialog";
 import { AppointmentDetailsDrawer } from "@/pages/patient_details/AppointmentDetailsDrawer";
+import { AppointmentListRow } from "@/components/appointment_list/AppointmentListRow";
+import { AppointmentListEmptyRow } from "@/components/appointment_list/AppointmentListEmptyRow";
+
+interface TAppointmentListDisplay {
+  patientId: string;
+  appointments: TAppointment[];
+  providers: TProvider[];
+}
+
+function AppointmentListDisplay({
+  patientId,
+  appointments,
+  providers,
+}: TAppointmentListDisplay) {
+  return (
+    <AppointmentList
+      headerAction={
+        <AppointmentCreateDialog patientId={patientId} providers={providers} />
+      }
+    >
+      {appointments.length ? (
+        appointments.map((a) => (
+          <AppointmentListRow
+            key={a.id}
+            appointment={a}
+            providers={providers}
+            dateCell={
+              <AppointmentDetailsDrawer patientId={patientId} appointment={a} />
+            }
+          />
+        ))
+      ) : (
+        <AppointmentListEmptyRow />
+      )}
+    </AppointmentList>
+  );
+}
 
 interface TAppointmentsListContainerProps {
   patientId: string;
@@ -37,15 +74,10 @@ function AppointmentsListContainer({
   const sortedApts = sortAppointments(appointments);
 
   return (
-    <AppointmentList
+    <AppointmentListDisplay
+      patientId={patientId}
       appointments={sortedApts}
       providers={providers}
-      headerAction={
-        <AppointmentCreateDialog patientId={patientId} providers={providers} />
-      }
-      renderDateCell={(appointment) => (
-        <AppointmentDetailsDrawer patientId={patientId} appointment={appointment} />
-      )}
     />
   );
 }
